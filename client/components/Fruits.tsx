@@ -5,6 +5,8 @@ import SelectedFruitForm from './SelectedFruit.tsx'
 import AddFruitForm from './AddFruit.tsx'
 import { ErrorMessage } from './Styled.tsx'
 import { useFruits } from '../hooks.ts'
+import { getMoviesUpcoming, getTrendingMovies } from '../api/moviesApi.tsx'
+import { useQuery } from '@tanstack/react-query'
 
 type FormState =
   | {
@@ -17,30 +19,51 @@ type FormState =
     }
 
 function Fruits() {
-  const [error, setError] = useState('')
-  const [form, setForm] = useState<FormState>({
-    selectedFruit: null,
-    show: 'none',
+  const {
+    data: trending,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['trending'],
+    queryFn: movies,
   })
-  const fruits = useFruits()
+  if (isLoading) return <h1>Loading...</h1>
+  if (isError) return console.error(error)
 
-  const handleMutationSuccess = () => {
-    handleCloseForm()
-    setError('')
-  }
+  console.log(trending)
 
-  const handleError = (error: unknown) => {
-    if (error instanceof Error) {
-      setError(error.message)
-    } else {
-      setError('Unknown error')
+  async function movies() {
+    const movies = {
+      upcoming: await getMoviesUpcoming(),
+      // trending: getTrendingMovies(),
     }
+    return movies
   }
 
-  const mutationOptions = {
-    onSuccess: handleMutationSuccess,
-    onError: handleError,
-  }
+  // const [error, setError] = useState('')
+  // const [form, setForm] = useState<FormState>({
+  //   selectedFruit: null,
+  //   show: 'none',
+  // })
+  // const fruits = useFruits()
+
+  // const handleMutationSuccess = () => {
+  //   handleCloseForm()
+  //   setError('')
+  // }
+
+  // const handleError = (error: unknown) => {
+  //   if (error instanceof Error) {
+  //     setError(error.message)
+  //   } else {
+  //     setError('Unknown error')
+  //   }
+  // }
+
+  // const mutationOptions = {
+  //   onSuccess: handleMutationSuccess,
+  //   onError: handleError,
+  // }
 
   const handleAdd = (fruit: FruitData) => {
     // TODO: use getAccessTokenSilently to get an access token
