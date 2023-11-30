@@ -5,8 +5,8 @@ import { JwtPayload } from 'jsonwebtoken'
 import jwks from 'jwks-rsa'
 
 // TODO: set the domain and audience (API Identifier)
-const domain = 'https://'
-const audience = 'https://'
+const domain = 'https://vitor-pohutukawa.au.auth0.com'
+const audience = 'https://cine/api'
 
 const checkJwt = jwt({
   secret: jwks.expressJwtSecret({

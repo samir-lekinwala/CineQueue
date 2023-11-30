@@ -19,7 +19,8 @@
     "build:server": "esbuild --packages=external --platform=node --format=esm --outfile=dist/server.js --bundle server/index.ts",
     "test": "vitest",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
-    "format": "prettier -w '**/*.{js,jsx,ts,tsx}'"
+    "format": "prettier -w '**/*.{js,jsx,ts,tsx}'",
+    "restart": "npm run knex migrate:latest && npm run knex seed:run"
   },
   "eslintConfig": {
     "extends": "@devacademy/eslint-config/react",
@@ -34,7 +35,8 @@
     "express-jwt-authz": "^2.4.1",
     "jwks-rsa": "^2.1.5",
     "knex": "^2.5.1",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "tailwind": "^4.0.0"
   },
   "devDependencies": {
     "@auth0/auth0-react": "^1.12.0",
