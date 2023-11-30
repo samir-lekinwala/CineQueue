@@ -5,6 +5,9 @@ import SelectedFruitForm from './SelectedFruit.tsx'
 import AddFruitForm from './AddFruit.tsx'
 import { ErrorMessage } from './Styled.tsx'
 import { useFruits } from '../hooks.ts'
+import { getMovies } from '../api/moviesApi.tsx'
+import { useQuery } from '@tanstack/react-query'
+import { getTvShows } from '../api/showsApi.tsx'
 
 type FormState =
   | {
@@ -17,30 +20,72 @@ type FormState =
     }
 
 function Fruits() {
-  const [error, setError] = useState('')
-  const [form, setForm] = useState<FormState>({
-    selectedFruit: null,
-    show: 'none',
+  const {
+    data: tvShows,
+    // isLoading: loading,
+    // isError: Error,
+  } = useQuery({
+    queryKey: ['tvShows'],
+    queryFn: getTvShows,
   })
-  const fruits = useFruits()
+  console.log('TV Shows', tvShows?.popular)
+  // if (loading) return <h1>Loading...</h1>
+  // if (Error) return console.error(error)
 
-  const handleMutationSuccess = () => {
-    handleCloseForm()
-    setError('')
-  }
+  const {
+    data: movies,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ['movies'],
+    queryFn: getMovies,
+  })
+  if (isLoading) return <h1>Loading...</h1>
+  if (isError) return console.error(error)
 
-  const handleError = (error: unknown) => {
-    if (error instanceof Error) {
-      setError(error.message)
-    } else {
-      setError('Unknown error')
-    }
-  }
+  const popularMovies = movies.popular.results
+  const upcomingMovies = movies.upcoming.results
+  const topRatedMovies = movies.topRated.results
 
-  const mutationOptions = {
-    onSuccess: handleMutationSuccess,
-    onError: handleError,
-  }
+  console.log(
+    'These are movies: ',
+    popularMovies,
+    upcomingMovies,
+    topRatedMovies
+  )
+
+  // async function movies() {
+  //   const movies = {
+  //     upcoming: await getMoviesUpcoming(),
+  //     // trending: getTrendingMovies(),
+  //   }
+  //   return movies
+  // }
+
+  // const [error, setError] = useState('')
+  // const [form, setForm] = useState<FormState>({
+  //   selectedFruit: null,
+  //   show: 'none',
+  // })
+  // const fruits = useFruits()
+
+  // const handleMutationSuccess = () => {
+  //   handleCloseForm()
+  //   setError('')
+  // }
+
+  // const handleError = (error: unknown) => {
+  //   if (error instanceof Error) {
+  //     setError(error.message)
+  //   } else {
+  //     setError('Unknown error')
+  //   }
+  // }
+
+  // const mutationOptions = {
+  //   onSuccess: handleMutationSuccess,
+  //   onError: handleError,
+  // }
 
   const handleAdd = (fruit: FruitData) => {
     // TODO: use getAccessTokenSilently to get an access token
