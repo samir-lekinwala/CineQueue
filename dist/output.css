@@ -607,16 +607,8 @@ video {
   max-width: 1280px;
 }
 
-.flex-auto {
-  flex: 1 1 auto;
-}
-
 .list-none {
   list-style-type: none;
-}
-
-.flex-row {
-  flex-direction: row;
 }
 
 .flex-col {

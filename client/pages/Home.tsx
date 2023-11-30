@@ -1,9 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
-import React from 'react'
+import React, { useState } from 'react'
 import { getTvShows } from '../api/showsApi'
 import { getMovies } from '../api/moviesApi'
+import Movies from '../components/Movies'
+import TvShows from '../components/TvShows'
 
 function Home() {
+  //enterTainmentType means the type of content, either tv show or movies. True means movies, false means tv shows
+  const [entertainmentType, setEntertainmentType] = useState(true)
   const {
     data: tvShows,
     // isLoading: loading,
@@ -12,7 +16,7 @@ function Home() {
     queryKey: ['tvShows'],
     queryFn: getTvShows,
   })
-  console.log('TV Shows', tvShows?.popular)
+  console.log('TV Shows', tvShows?.trending)
   // if (loading) return <h1>Loading...</h1>
   // if (Error) return console.error(error)
 
@@ -38,48 +42,27 @@ function Home() {
     topRatedMovies
   )
 
+  function onButtonClick() {
+    setEntertainmentType(!entertainmentType)
+  }
+
   return (
     <>
       <div>Home</div>
-      <div className="flex flex-wrap gap-4">
-        {popularMovies.map((movie) => (
-          <>
-            <div>
-              {/* <p key={movie.id}>{movie.title}</p> */}
-              <img
-                src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-                alt=""
-                width="200px"
-              />
-            </div>
-          </>
-        ))}
 
-        {upcomingMovies.map((movie) => (
-          <>
-            <div>
-              {/* <p key={movie.id}>{movie.title}</p> */}
-              <img
-                src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-                alt=""
-                width="200px"
-              />
-            </div>
-          </>
-        ))}
-        {topRatedMovies.map((movie) => (
-          <>
-            <div>
-              {/* <p key={movie.id}>{movie.title}</p> */}
-              <img
-                src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}
-                alt=""
-                width="200px"
-              />
-            </div>
-          </>
-        ))}
-      </div>
+      {entertainmentType ? (
+        <>
+          <button onClick={() => onButtonClick()}>TV Shows</button>
+          <Movies movies={movies} entertainmentButton={onButtonClick} />
+        </>
+      ) : (
+        <div>
+          <button onClick={() => onButtonClick()}>Movies</button>
+          <TvShows shows={tvShows} />
+          {/* <h2>TV Shows</h2> */}
+        </div>
+      )}
+      {/* <h2>Popular Movies</h2> */}
     </>
   )
 }
