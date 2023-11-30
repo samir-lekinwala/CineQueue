@@ -1,4 +1,5 @@
 import React from 'react'
+import Posters from './Posters'
 
 interface Props {
   shows: any
@@ -17,42 +18,18 @@ function TvShows(props: Props) {
         <div className="flex flex-wrap gap-4">
           {topRatedShows.map((show) => (
             <>
-              <div>
-                {/* <p key={movie.id}>{movie.title}</p> */}
-                <img
-                  src={`${tmdbPosterLink}${show.poster_path}`}
-                  alt=""
-                  width="200px"
-                />
-                <p>{`ID: ${show.id}`}</p>
-              </div>
+              <Posters content={show} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
           <h2>Upcoming Movies</h2>
           {trendingShows.map((show) => (
             <>
-              <div>
-                {/* <p key={movie.id}>{movie.title}</p> */}
-                <img
-                  src={`${tmdbPosterLink}${show.poster_path}`}
-                  alt=""
-                  width="200px"
-                />
-                <p>{`ID: ${show.id}`}</p>
-              </div>
+              <Posters content={show} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
           {popularShows.map((show) => (
             <>
-              <div>
-                {/* <p key={movie.id}>{movie.title}</p> */}
-                <img
-                  src={`${tmdbPosterLink}${show.poster_path}`}
-                  alt=""
-                  width="200px"
-                />
-                <p>{`ID: ${show.id}`}</p>
-              </div>
+              <Posters content={show} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
         </div>

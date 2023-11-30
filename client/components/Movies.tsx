@@ -1,4 +1,6 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
+import Posters from './Posters'
 
 interface Props {
   movies: any
@@ -17,42 +19,18 @@ function Movies(props: Props) {
         <div className="flex flex-wrap gap-4">
           {popularMovies.map((movie) => (
             <>
-              <div>
-                {/* <p key={movie.id}>{movie.title}</p> */}
-                <img
-                  src={`${tmdbPosterLink}${movie.poster_path}`}
-                  alt=""
-                  width="200px"
-                />
-                <p>{`ID: ${movie.id}`}</p>
-              </div>
+              <Posters content={movie} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
           <h2>Upcoming Movies</h2>
           {upcomingMovies.map((movie) => (
             <>
-              <div>
-                {/* <p key={movie.id}>{movie.title}</p> */}
-                <img
-                  src={`${tmdbPosterLink}${movie.poster_path}`}
-                  alt=""
-                  width="200px"
-                />
-                <p>{`ID: ${movie.id}`}</p>
-              </div>
+              <Posters content={movie} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
           {topRatedMovies.map((movie) => (
             <>
-              <div>
-                {/* <p key={movie.id}>{movie.title}</p> */}
-                <img
-                  src={`${tmdbPosterLink}${movie.poster_path}`}
-                  alt=""
-                  width="200px"
-                />
-                <p>{`ID: ${movie.id}`}</p>
-              </div>
+              <Posters content={movie} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
         </div>
