@@ -9,6 +9,8 @@ function TvShows(props: Props) {
   const trendingShows = props.shows.trending.results
   const topRatedShows = props.shows.topRated.results
 
+  const tmdbPosterLink = `https://image.tmdb.org/t/p/w500/`
+
   return (
     <div>
       <div>
@@ -18,7 +20,7 @@ function TvShows(props: Props) {
               <div>
                 {/* <p key={movie.id}>{movie.title}</p> */}
                 <img
-                  src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
+                  src={`${tmdbPosterLink}${show.poster_path}`}
                   alt=""
                   width="200px"
                 />
@@ -32,7 +34,7 @@ function TvShows(props: Props) {
               <div>
                 {/* <p key={movie.id}>{movie.title}</p> */}
                 <img
-                  src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
+                  src={`${tmdbPosterLink}${show.poster_path}`}
                   alt=""
                   width="200px"
                 />
@@ -45,7 +47,7 @@ function TvShows(props: Props) {
               <div>
                 {/* <p key={movie.id}>{movie.title}</p> */}
                 <img
-                  src={`https://image.tmdb.org/t/p/w500/${show.poster_path}`}
+                  src={`${tmdbPosterLink}${show.poster_path}`}
                   alt=""
                   width="200px"
                 />
