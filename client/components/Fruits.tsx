@@ -5,8 +5,9 @@ import SelectedFruitForm from './SelectedFruit.tsx'
 import AddFruitForm from './AddFruit.tsx'
 import { ErrorMessage } from './Styled.tsx'
 import { useFruits } from '../hooks.ts'
-import { getMoviesUpcoming, getTrendingMovies } from '../api/moviesApi.tsx'
+import { getMovies } from '../api/moviesApi.tsx'
 import { useQuery } from '@tanstack/react-query'
+import { getTvShows } from '../api/showsApi.tsx'
 
 type FormState =
   | {
@@ -20,25 +21,46 @@ type FormState =
 
 function Fruits() {
   const {
-    data: trending,
+    data: tvShows,
+    // isLoading: loading,
+    // isError: Error,
+  } = useQuery({
+    queryKey: ['tvShows'],
+    queryFn: getTvShows,
+  })
+  console.log('TV Shows', tvShows?.popular)
+  // if (loading) return <h1>Loading...</h1>
+  // if (Error) return console.error(error)
+
+  const {
+    data: movies,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['trending'],
-    queryFn: movies,
+    queryKey: ['movies'],
+    queryFn: getMovies,
   })
   if (isLoading) return <h1>Loading...</h1>
   if (isError) return console.error(error)
 
-  console.log(trending)
+  const popularMovies = movies.popular.results
+  const upcomingMovies = movies.upcoming.results
+  const topRatedMovies = movies.topRated.results
 
-  async function movies() {
-    const movies = {
-      upcoming: await getMoviesUpcoming(),
-      // trending: getTrendingMovies(),
-    }
-    return movies
-  }
+  console.log(
+    'These are movies: ',
+    popularMovies,
+    upcomingMovies,
+    topRatedMovies
+  )
+
+  // async function movies() {
+  //   const movies = {
+  //     upcoming: await getMoviesUpcoming(),
+  //     // trending: getTrendingMovies(),
+  //   }
+  //   return movies
+  // }
 
   // const [error, setError] = useState('')
   // const [form, setForm] = useState<FormState>({
