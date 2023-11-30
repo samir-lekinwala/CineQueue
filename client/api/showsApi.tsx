@@ -45,10 +45,19 @@ export async function getPopularTvShows() {
   const data = await response.json()
   return data
 }
+export async function getTrendingTvShows() {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/trending/tv/week?language=en`,
+    options
+  )
+  const data = await response.json()
+  return data
+}
 
 export async function getTvShows() {
   return {
     topRated: await getTopRatedTvShows(),
     popular: await getPopularTvShows(),
+    trending: await getTrendingTvShows(),
   }
 }
