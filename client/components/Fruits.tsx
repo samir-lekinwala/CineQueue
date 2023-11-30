@@ -5,6 +5,9 @@ import SelectedFruitForm from './SelectedFruit.tsx'
 import AddFruitForm from './AddFruit.tsx'
 import { ErrorMessage } from './Styled.tsx'
 import { useFruits } from '../hooks.ts'
+import { getMovies } from '../api/moviesApi.tsx'
+import { useQuery } from '@tanstack/react-query'
+import { getTvShows } from '../api/showsApi.tsx'
 
 type FormState =
   | {
