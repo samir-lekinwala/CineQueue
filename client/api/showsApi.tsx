@@ -53,6 +53,19 @@ export async function getTrendingTvShows() {
   const data = await response.json()
   return data
 }
+export async function getTrailerForShow(id: number) {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/tv/${id}/videos?language=en-US`,
+    options
+  )
+  const data = await response.json()
+  const result = await data.results.find(
+    (element: any) => element.type == 'Trailer'
+  )
+  return result.key
+}
+
+console.log('tv show trailer ', getTrailerForShow(1429))
 
 export async function getTvShows() {
   return {

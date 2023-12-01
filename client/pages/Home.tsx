@@ -39,7 +39,7 @@ function Home() {
   }
 
   return (
-    <>
+    <div className="bg-black">
       <div>Home</div>
 
       {entertainmentType ? (
@@ -63,7 +63,7 @@ function Home() {
           <TvShows shows={tvShows} />
         </div>
       )}
-    </>
+    </div>
   )
 }
 
