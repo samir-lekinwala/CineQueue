@@ -16,7 +16,6 @@ function Home() {
     queryKey: ['tvShows'],
     queryFn: getTvShows,
   })
-  console.log('TV Shows', tvShows?.trending)
   // if (loading) return <h1>Loading...</h1>
   // if (Error) return console.error(error)
 
@@ -34,13 +33,6 @@ function Home() {
   const popularMovies = movies.popular.results
   const upcomingMovies = movies.upcoming.results
   const topRatedMovies = movies.topRated.results
-
-  console.log(
-    'These are movies: ',
-    popularMovies,
-    upcomingMovies,
-    topRatedMovies
-  )
 
   function onButtonClick() {
     setEntertainmentType(!entertainmentType)

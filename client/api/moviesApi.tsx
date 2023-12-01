@@ -12,6 +12,14 @@ export const options = {
     Authorization: `Bearer ${apiKey}`,
   },
 }
+export async function getMovieById(id: number) {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
+    options
+  )
+  const data = await response.json()
+  return data
+}
 
 export async function searchMovie(searchTerm: string) {
   const response = await fetch(
@@ -46,6 +54,19 @@ export async function getPopularMovies() {
   const data = await response.json()
   return data
 }
+export async function getTrailerForMovie(id: number) {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}/videos?language=en-US`,
+    options
+  )
+  const data = await response.json()
+  const result = await data.results.find(
+    (element: any) => element.type == 'Trailer'
+  )
+  return result.key
+
+  // return data
+}
 
 export async function getMovies() {
   return {
@@ -54,5 +75,3 @@ export async function getMovies() {
     upcoming: await getUpcomingMovies(),
   }
 }
-
-// console.log(getMovies())

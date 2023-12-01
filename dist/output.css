@@ -553,6 +553,10 @@ video {
   right: 0px;
 }
 
+.z-10 {
+  z-index: 10;
+}
+
 .z-50 {
   z-index: 50;
 }
@@ -590,8 +594,24 @@ video {
   height: 2rem;
 }
 
+.min-h-full {
+  min-height: 100%;
+}
+
 .w-8 {
   width: 2rem;
+}
+
+.w-auto {
+  width: auto;
+}
+
+.min-w-full {
+  min-width: 100%;
+}
+
+.max-w-none {
+  max-width: none;
 }
 
 .max-w-screen-xl {
