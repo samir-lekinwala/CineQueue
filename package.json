@@ -7,8 +7,10 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "run-p dev:server dev:client dev:css",
+    "restart": "npm run knex migrate:latest && npm run knex seed:run",
     "dev:server": "tsx watch server/index.ts",
     "dev:client": "vite",
+    "restart": "npm run knex migrate:latest && npm run knex seed:run",
     "knex": "knex --knexfile server/db/knexfile.js",
     "db-reset": "run-s db:*",
     "db:delete": "rm server/db/dev.sqlite3",
@@ -35,7 +37,8 @@
     "express-jwt-authz": "^2.4.1",
     "jwks-rsa": "^2.1.5",
     "knex": "^2.5.1",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "tailwind": "^4.0.0"
   },
   "devDependencies": {
     "@auth0/auth0-react": "^1.12.0",

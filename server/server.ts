@@ -12,7 +12,7 @@ const server = express()
 server.use(express.json())
 server.use(express.static(Path.join(__dirname, 'public')))
 
-server.use('/api/v1/fruits', fruitRoutes)
+server.use('/api/v1/cine', fruitRoutes)
 
 server.get('*', (req, res) => {
   res.sendFile(Path.join(__dirname, 'public/index.html'))
