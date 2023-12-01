@@ -5,18 +5,19 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function Nav() {
-  // TODO: call the useAuth0 hook and destructure user, logout, and loginWithRedirect
-  // TODO: replace placeholder user object with the one from auth0
-  const user = {
-    nickname: 'john.doe',
-  }
+  const { user, logout, loginWithRedirect } = useAuth0()
+  const [toggledNavMenu, setToggledNavMenu] = useState(false)
 
   const handleSignOut = () => {
     logout()
   }
 
   const handleSignIn = () => {
-    console.log('sign in')
+    loginWithRedirect()
+  }
+
+  function handleNavMenuClick() {
+    setToggledNavMenu(!toggledNavMenu)
   }
 
   return (
