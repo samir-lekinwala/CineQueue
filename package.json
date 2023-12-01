@@ -7,6 +7,7 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "run-p dev:server dev:client dev:css",
+    "restart": "npm run knex migrate:latest && npm run knex seed:run",
     "dev:server": "tsx watch server/index.ts",
     "dev:client": "vite",
     "restart": "npm run knex migrate:latest && npm run knex seed:run",
@@ -20,7 +21,8 @@
     "build:server": "esbuild --packages=external --platform=node --format=esm --outfile=dist/server.js --bundle server/index.ts",
     "test": "vitest",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
-    "format": "prettier -w '**/*.{js,jsx,ts,tsx}'"
+    "format": "prettier -w '**/*.{js,jsx,ts,tsx}'",
+    "dev:css": "tailwindcss -i ./client/styles/input.css -o ./dist/output.css --watch"
   },
   "eslintConfig": {
     "extends": "@devacademy/eslint-config/react",
