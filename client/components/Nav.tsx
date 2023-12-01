@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 function Nav() {
   const { user, logout, loginWithRedirect } = useAuth0()
-  const [toggledNavMenu, setToggledNavMenu] = useState(true)
+  const [toggledNavMenu, setToggledNavMenu] = useState(false)
 
   const handleSignOut = () => {
     logout()
@@ -17,7 +17,7 @@ function Nav() {
   }
 
   function handleNavMenuClick() {
-    setToggledNavMenu((state) => !state)
+    setToggledNavMenu(!toggledNavMenu)
   }
 
   return (
@@ -43,8 +43,6 @@ function Nav() {
 
           <NavGroup>
             <IfAuthenticated>
-              <NavButton onClick={handleSignOut}></NavButton>
-
               <div className="relative">
                 <button
                   type="button"
@@ -81,22 +79,28 @@ function Nav() {
                     </div>
                     <ul className="py-2" aria-labelledby="user-menu-button">
                       <li>
-                        {
-                          <Link
-                            to="/dashboard"
-                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                          >
-                            Dashboard
-                          </Link>
-                        }
+                        <Link
+                          to="/dashboard"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                        >
+                          Dashboard
+                        </Link>
                       </li>
                       <li>
-                        <a
-                          href="#"
+                        <Link
+                          to="/watchlist"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
+                        >
+                          Watchlist
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          onClick={handleSignOut}
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                         >
                           Sign out
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </div>
