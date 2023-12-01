@@ -3,9 +3,10 @@ import { IfAuthenticated, IfNotAuthenticated } from './Authenticated.tsx'
 import { NavGroup, NavButton } from './Styled.tsx'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { getUser } from '../api/userApi.tsx'
 
 function Nav() {
-  const { user, logout, loginWithRedirect } = useAuth0()
+  const { user, logout, loginWithRedirect, getAccessTokenSilently } = useAuth0()
   const [toggledNavMenu, setToggledNavMenu] = useState(false)
 
   const handleSignOut = () => {
@@ -19,6 +20,17 @@ function Nav() {
   function handleNavMenuClick() {
     setToggledNavMenu(!toggledNavMenu)
   }
+
+  async function getAuthToken() {
+    const accessToken = await getAccessTokenSilently()
+
+    // console.log(accessToken)
+    const response = await getUser(accessToken)
+    console.log(response)
+    return response
+  }
+
+  getAuthToken()
 
   return (
     <>

@@ -66,3 +66,12 @@ export async function userCanEdit(
       }
     })
 }
+
+export async function upsertProfile(token: unknown, db = connection) {
+  await db('users')
+    .insert({
+      auth_id: token,
+    })
+    .onConflict('auth0_id')
+    .merge()
+}

@@ -113,4 +113,10 @@ router.delete('/:id', async (req: JwtRequest, res) => {
   }
 })
 
+router.post('/', async (req: JwtRequest, res) => {
+  const token = req.auth?.sub
+
+  await db.upsertProfile(token)
+})
+
 export default router
