@@ -537,6 +537,14 @@ video {
   border-width: 0;
 }
 
+.absolute {
+  position: absolute;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -562,12 +570,28 @@ video {
   height: 2rem;
 }
 
+.min-h-full {
+  min-height: 100%;
+}
+
 .w-8 {
   width: 2rem;
 }
 
+.w-auto {
+  width: auto;
+}
+
+.min-w-full {
+  min-width: 100%;
+}
+
 .max-w-screen-xl {
   max-width: 1280px;
+}
+
+.max-w-none {
+  max-width: none;
 }
 
 .flex-wrap {
