@@ -2,11 +2,11 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 function Posters(props: Props) {
-  const { content, tmdbPosterLink } = props
+  const { type, content, tmdbPosterLink } = props
 
   return (
     <div>
-      <Link to={`/details/${content.id}`}>
+      <Link to={`/details/${type}/${content.id}`}>
         <img
           src={`${tmdbPosterLink}${content.poster_path}`}
           alt=""

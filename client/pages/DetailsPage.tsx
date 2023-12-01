@@ -57,6 +57,7 @@ function DetailsPage() {
     <div>
       DetailsPage
       <h1>{movie.original_title}</h1>
+      <p>{type}</p>
       <video
         src={`${youtubeLink}${trailer}`}
         loop

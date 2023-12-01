@@ -11,7 +11,7 @@ import Dashboard from './pages/Dashboard.tsx'
 export const routes = createRoutesFromElements(
   <Route path="/" element={<AppLayout />}>
     <Route index element={<Home />} />
-    <Route path="details/:id" element={<DetailsPage />} />
+    <Route path="details/:type/:id" element={<DetailsPage />} />
     <Route path="seen" element={<Seen />} />
     <Route path="watchlist" element={<Watchlist />} />
     <Route path="dashboard" element={<Dashboard />} />
