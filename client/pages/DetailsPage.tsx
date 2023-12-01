@@ -39,26 +39,30 @@ function DetailsPage() {
   console.log(details)
 
   return (
-    <div>
-      <iframe
-        title={details.id}
-        id="player"
-        className="
+    <div className="bg-black snap-proximity snap-x snap-start">
+      <div className="snap-center ...">
+        <iframe
+          title=" "
+          id="player"
+          className="
         w-full aspect-video"
-        // absolute z-10 w-auto
-        // min-w-full min-h-full max-w-none
-        frameBorder="0"
-        allowFullScreen
-        src={
-          // {`${youtubeLink}${trailer}`}
-          `http://www.youtube.com/embed/${trailer}?autoplay=1&controls=0&enablejsapi=1&origin=http://example.com`
-        }
-      ></iframe>
-      {type == 'show' ? (
-        <TvShowDetails details={details} />
-      ) : (
-        <MovieDetails details={details} />
-      )}
+          // absolute z-10 w-auto
+          // min-w-full min-h-full max-w-none
+          frameBorder="0"
+          allowFullScreen
+          src={
+            // {`${youtubeLink}${trailer}`}
+            `http://www.youtube.com/embed/${trailer}?autoplay=1&controls=0&enablejsapi=1&origin=http://example.com`
+          }
+        ></iframe>
+      </div>
+      <div className="snap-center">
+        {type == 'show' ? (
+          <TvShowDetails details={details} />
+        ) : (
+          <MovieDetails details={details} />
+        )}
+      </div>
       {/* DetailsPage
       <h1>{details.original_title}</h1>
       <p>{type}</p> */}

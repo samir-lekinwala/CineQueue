@@ -11,6 +11,7 @@ function Posters(props: Props) {
           src={`${tmdbPosterLink}${content.poster_path}`}
           alt=""
           width="200px"
+          className="rounded"
         />
       </Link>
       <p>{`ID: ${content.id}`}</p>
