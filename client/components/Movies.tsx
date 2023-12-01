@@ -19,30 +19,18 @@ function Movies(props: Props) {
         <div className="flex flex-wrap gap-4">
           {popularMovies.map((movie) => (
             <>
-              <Posters
-                type={'movie'}
-                content={movie}
-                tmdbPosterLink={tmdbPosterLink}
-              />
+              <Posters content={movie} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
           <h2>Upcoming Movies</h2>
           {upcomingMovies.map((movie) => (
             <>
-              <Posters
-                type={'movie'}
-                content={movie}
-                tmdbPosterLink={tmdbPosterLink}
-              />
+              <Posters content={movie} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
           {topRatedMovies.map((movie) => (
             <>
-              <Posters
-                type={'movie'}
-                content={movie}
-                tmdbPosterLink={tmdbPosterLink}
-              />
+              <Posters content={movie} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
         </div>

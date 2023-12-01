@@ -18,30 +18,18 @@ function TvShows(props: Props) {
         <div className="flex flex-wrap gap-4">
           {topRatedShows.map((show) => (
             <>
-              <Posters
-                type={'show'}
-                content={show}
-                tmdbPosterLink={tmdbPosterLink}
-              />
+              <Posters content={show} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
           <h2>Upcoming Movies</h2>
           {trendingShows.map((show) => (
             <>
-              <Posters
-                type={'show'}
-                content={show}
-                tmdbPosterLink={tmdbPosterLink}
-              />
+              <Posters content={show} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
           {popularShows.map((show) => (
             <>
-              <Posters
-                type={'show'}
-                content={show}
-                tmdbPosterLink={tmdbPosterLink}
-              />
+              <Posters content={show} tmdbPosterLink={tmdbPosterLink} />
             </>
           ))}
         </div>
