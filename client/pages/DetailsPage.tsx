@@ -35,8 +35,6 @@ function DetailsPage() {
     // return result.key
   }
 
-  const youtubeLink = `https://www.youtube.com/watch?v=`
-
   // console.log(trailer)
   console.log(trailer)
   // console.log(findTrailer())
@@ -53,19 +51,24 @@ function DetailsPage() {
   if (isError) return console.error(error)
   console.log(movie)
 
+  // const youtubeLink = `https://www.youtube.com/embed/watch?v=`
   return (
     <div>
+      <iframe
+        title={movie.id}
+        id="player"
+        // type="text/html"
+        className="absolute z-10 w-auto  
+        min-w-full min-h-full max-w-none"
+        frameBorder="0"
+        src={
+          // {`${youtubeLink}${trailer}`}
+          `http://www.youtube.com/embed/${trailer}?autoplay=1&controls=0&enablejsapi=1&origin=http://example.com`
+        }
+      ></iframe>
       DetailsPage
       <h1>{movie.original_title}</h1>
       <p>{type}</p>
-      <video
-        src={`${youtubeLink}${trailer}`}
-        loop
-        muted
-        className="absolute z-10 w-auto  
-        min-w-full min-h-full max-w-none"
-      ></video>
-      {/* <a href={`${youtubeLink}${trailer}`}>Trailer</a> */}
     </div>
   )
 }

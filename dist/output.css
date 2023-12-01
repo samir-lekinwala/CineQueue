@@ -590,6 +590,10 @@ video {
   display: grid;
 }
 
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
 .h-8 {
   height: 2rem;
 }
@@ -604,6 +608,10 @@ video {
 
 .w-auto {
   width: auto;
+}
+
+.w-full {
+  width: 100%;
 }
 
 .min-w-full {
