@@ -69,10 +69,8 @@ function Home() {
             Movies
           </button>
           <TvShows shows={tvShows} />
-          {/* <h2>TV Shows</h2> */}
         </div>
       )}
-      {/* <h2>Popular Movies</h2> */}
     </>
   )
 }
