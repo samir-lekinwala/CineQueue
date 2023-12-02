@@ -1,8 +1,8 @@
 import { NavHashLink } from 'react-router-hash-link'
 
 function Posters(props: Props) {
-  const { type, content, tmdbPosterLink } = props
-
+  const { type, content } = props
+  const tmdbPosterLink = `https://image.tmdb.org/t/p/w500/`
   return (
     <div>
       <NavHashLink to={`/details/${type}/${content.id}#trailer`}>

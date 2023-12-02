@@ -6,6 +6,7 @@ import { getDetailById, getTrailer } from '../api/combinedApi'
 import TvShowDetails from '../components/TvShowDetails'
 import MovieDetails from '../components/MovieDetails'
 import Trailer from '../components/Trailer'
+import Recommendations from '../components/Recommendations'
 
 function DetailsPage() {
   const { id, type } = useParams()
@@ -52,6 +53,7 @@ function DetailsPage() {
           <MovieDetails details={details} />
         )}
       </div>
+      <Recommendations type={type} id={Number(id)} />
     </div>
   )
 }
