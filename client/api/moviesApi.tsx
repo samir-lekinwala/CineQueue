@@ -20,6 +20,14 @@ export async function getMovieById(id: number) {
   const data = await response.json()
   return data
 }
+export async function getRecomendationsByMovieId(id: number) {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/movie/${id}/recommendations?language=en-US&page=1`,
+    options
+  )
+  const data = await response.json()
+  return data
+}
 
 export async function searchMovie(searchTerm: string) {
   const response = await fetch(
