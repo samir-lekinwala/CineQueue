@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
-import React from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 // import { getMovieById, getTrailerForMovie } from '../api/moviesApi'
 import { getDetailById, getTrailer } from '../api/combinedApi'
@@ -11,13 +11,22 @@ import Recommendations from '../components/Recommendations'
 function DetailsPage() {
   const { id, type } = useParams()
 
+  const queryClient = useQueryClient()
+  useEffect(() => {
+    // Invalidate relevant queries when type or id changes
+    queryClient.invalidateQueries(['details', type, id])
+    queryClient.invalidateQueries(['trailer', type, id])
+  }, [queryClient, type, id])
+
+  // queryClient.invalidateQueries({ queryKey: ['details'] })
+  // queryClient.invalidateQueries({ queryKey: ['trailer'] })
   async function getDetails() {
     const result = await getDetailById(type, Number(id))
     return result
   }
 
   const { data: trailer } = useQuery({
-    queryKey: ['trailer'],
+    queryKey: ['trailer', type, id],
     queryFn: getTrailerResult,
   })
 
@@ -33,7 +42,7 @@ function DetailsPage() {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['details'],
+    queryKey: ['details', type, id],
     queryFn: getDetails,
   })
   if (isLoading) return <h1>Loading...</h1>
