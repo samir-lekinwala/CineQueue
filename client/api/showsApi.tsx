@@ -23,12 +23,13 @@ export async function searchShow(searchTerm: string) {
 //recomendations based on tv show id
 export async function getRecomendationsById(id: number) {
   const response = await fetch(
-    `https://api.themoviedb.org/3/tv/${id}?language=en-US`,
+    `https://api.themoviedb.org/3/tv/${id}/recommendations?language=en-US&page=1`,
     options
   )
   const data = await response.json()
   return data
 }
+
 export async function getTopRatedTvShows() {
   const response = await fetch(
     `https://api.themoviedb.org/3/tv/top_rated?language=en-US&page=1`,

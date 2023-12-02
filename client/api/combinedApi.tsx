@@ -43,3 +43,21 @@ export async function getDetailById(type: string, id: number) {
     return data
   }
 }
+
+export async function getRecomendationsById(type: string, id: number) {
+  if (type == 'show') {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/tv/${id}/recommendations?language=en-US&page=1`,
+      options
+    )
+    const data = await response.json()
+    return data
+  } else if (type == 'movie') {
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/${id}/recommendations?language=en-US&page=1`,
+      options
+    )
+    const data = await response.json()
+    return data
+  }
+}
