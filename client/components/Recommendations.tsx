@@ -40,8 +40,10 @@ function Recommendations(props: Props) {
   return (
     <div>
       <div>
-        <h3 className="text-white">Recomendations</h3>
-        <div className="flex">
+        <h3 className="text-white text-center font-extrabold">
+          Recomendations
+        </h3>
+        <div className="flex gap-1 rounded">
           {details.results.map((content) => (
             <Posters type={type} key={content.id} content={content} />
           ))}
