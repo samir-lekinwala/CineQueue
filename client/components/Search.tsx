@@ -1,15 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { searchShow } from '../api/showsApi'
+import { searchMovie } from '../api/moviesApi'
 
 function Search() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const [searchResults, setSearchResults] = useState({})
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const form = new FormData(e.currentTarget)
     const search = form.get('search-box')?.valueOf() as string
-    // const newTodo = { task: task, completed: false }
-    console.log(search)
-
-    // mutateAddTask.mutate(newTodo)
+    await searchingTitles(search)
     e.currentTarget.reset()
+  }
+
+  async function searchingTitles(string: string) {
+    const results = {
+      shows: await searchShow(string),
+      movies: await searchMovie(string),
+    }
+
+    setSearchResults(results)
+    console.log(searchResults)
   }
 
   return (

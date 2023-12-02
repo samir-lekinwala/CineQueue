@@ -18,8 +18,6 @@ function DetailsPage() {
     queryClient.invalidateQueries(['trailer', type, id])
   }, [queryClient, type, id])
 
-  // queryClient.invalidateQueries({ queryKey: ['details'] })
-  // queryClient.invalidateQueries({ queryKey: ['trailer'] })
   async function getDetails() {
     const result = await getDetailById(type, Number(id))
     return result
