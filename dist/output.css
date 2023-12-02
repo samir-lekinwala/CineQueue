@@ -553,10 +553,6 @@ video {
   right: 0px;
 }
 
-.z-10 {
-  z-index: 10;
-}
-
 .z-50 {
   z-index: 50;
 }
@@ -634,14 +630,6 @@ video {
   height: 2rem;
 }
 
-.h-screen {
-  height: 100vh;
-}
-
-.min-h-full {
-  min-height: 100%;
-}
-
 .min-h-screen {
   min-height: 100vh;
 }
@@ -654,24 +642,12 @@ video {
   width: 2rem;
 }
 
-.w-auto {
-  width: auto;
-}
-
 .w-full {
   width: 100%;
 }
 
-.min-w-full {
-  min-width: 100%;
-}
-
 .max-w-2xl {
   max-width: 42rem;
-}
-
-.max-w-none {
-  max-width: none;
 }
 
 .max-w-screen-xl {

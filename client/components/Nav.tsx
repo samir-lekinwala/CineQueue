@@ -3,6 +3,7 @@ import { IfAuthenticated, IfNotAuthenticated } from './Authenticated.tsx'
 import { NavGroup, NavButton } from './Styled.tsx'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import Search from './Search.tsx'
 
 function Nav() {
   const { user, logout, loginWithRedirect } = useAuth0()
@@ -22,7 +23,7 @@ function Nav() {
 
   return (
     <>
-      <nav className="bg-white border-gray-200 dark:bg-gray-900 h-15">
+      <nav className=" border-gray-200 bg-black h-15">
         <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
           {/* Image and Link to the far left */}
           <div className="flex items-start space-x-3">
@@ -40,7 +41,7 @@ function Nav() {
               </span>
             </Link>
           </div>
-
+          <Search />
           <NavGroup>
             <IfAuthenticated>
               <div className="relative">

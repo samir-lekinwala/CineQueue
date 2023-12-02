@@ -4,3 +4,4 @@ bundle.*
 *.sqlite3
 .env
 package-lock.json
+output.css

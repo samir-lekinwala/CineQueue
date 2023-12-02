@@ -1,6 +1,7 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getRecomendationsById } from '../api/combinedApi'
 import Posters from './Posters'
+import { useEffect } from 'react'
 
 interface Props {
   type: string
@@ -9,6 +10,14 @@ interface Props {
 
 function Recommendations(props: Props) {
   const { type, id } = props
+
+  const queryClient = useQueryClient()
+  useEffect(() => {
+    // Invalidate relevant queries when type or id changes
+    queryClient.invalidateQueries(['details', type, id])
+    queryClient.invalidateQueries(['trailer', type, id])
+    queryClient.invalidateQueries(['recomendations', type, id])
+  }, [queryClient, type, id])
 
   const {
     data: details,
@@ -31,8 +40,10 @@ function Recommendations(props: Props) {
   return (
     <div>
       <div>
-        <h3 className="text-white">Recomendations</h3>
-        <div className="flex">
+        <h3 className="text-white text-center font-extrabold">
+          Recomendations
+        </h3>
+        <div className="flex gap-1 rounded">
           {details.results.map((content) => (
             <Posters type={type} key={content.id} content={content} />
           ))}
