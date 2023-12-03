@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { searchMovie } from '../api/moviesApi'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import Posters from '../components/Posters'
 import { searchShow } from '../api/showsApi'
 
@@ -12,15 +12,22 @@ function SearchResults() {
   const params = new URLSearchParams(search)
   const searchTerm = params.get('query')
 
+  const queryClient = useQueryClient()
+  useEffect(() => {
+    // getSearchResults()
+    // Invalidate relevant queries when type or id changes
+    queryClient.invalidateQueries(['search', searchTerm])
+  }, [queryClient, searchTerm])
+
   const {
     data: searchResults,
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ['search'],
+    queryKey: ['search', searchTerm],
     queryFn: getSearchResults,
   })
-  if (isLoading) return <h1>Loading...</h1>
+  if (isLoading) return <h1 className="bg-black text-white">Loading...</h1>
   if (isError) return console.error(error)
 
   async function getSearchResults() {
@@ -31,8 +38,8 @@ function SearchResults() {
 
   console.log(searchResults)
   return (
-    <>
-      <div>{`Results for ${searchTerm}`}</div>
+    <div className="bg-black">
+      <div className="text-white">{`Results for "${searchTerm}"`}</div>
       <div className="flex flex-wrap gap-4">
         {searchResults.movies.results.map((result) => (
           <Posters key={result.id} content={result} type={'movie'} />
@@ -41,7 +48,7 @@ function SearchResults() {
           <Posters key={result.id} content={result} type={'show'} />
         ))}
       </div>
-    </>
+    </div>
   )
 }
 
