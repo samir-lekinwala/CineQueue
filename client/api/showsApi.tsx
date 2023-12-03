@@ -66,7 +66,6 @@ export async function getTrailerForShow(id: number) {
   return result.key
 }
 
-
 console.log('tv show trailer ', getTrailerForShow(1429))
 
 export async function getTvShows() {
