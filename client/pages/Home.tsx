@@ -16,8 +16,6 @@ function Home() {
     queryKey: ['tvShows'],
     queryFn: getTvShows,
   })
-  // if (loading) return <h1>Loading...</h1>
-  // if (Error) return console.error(error)
 
   const {
     data: movies,
@@ -29,10 +27,6 @@ function Home() {
   })
   if (isLoading) return <h1>Loading...</h1>
   if (isError) return console.error(error)
-
-  const popularMovies = movies.popular.results
-  const upcomingMovies = movies.upcoming.results
-  const topRatedMovies = movies.topRated.results
 
   function onButtonClick() {
     setEntertainmentType(!entertainmentType)
