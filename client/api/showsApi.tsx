@@ -66,27 +66,6 @@ export async function getTrailerForShow(id: number) {
   return result.key
 }
 
-// path https://api.themoviedb.org/3/tv/series_id/season/season_number?language=en-US
-// Don't do this without broswer side throughput limiting
-// Build request error handling
-export async function getSeasonsForShow(id: number, numberOfSeasons: number) {
-  const requests = []
-
-  for (
-    let seasonNumber = 1;
-    seasonNumber <= numberOfSeasons;
-    seasonNumber += 1
-  ) {
-    requests.push(
-      fetch(
-        `https://api.themoviedb.org/3/tv/${id}/season/${seasonNumber}?language=en-US`,
-        options
-      ).then((response) => response.json())
-    )
-  }
-
-  return Promise.all(requests)
-}
 
 console.log('tv show trailer ', getTrailerForShow(1429))
 
