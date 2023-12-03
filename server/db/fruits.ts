@@ -1,5 +1,9 @@
 import connection from './connection.ts'
-import { Fruit, FruitSnakeCase, FruitData } from '../../models/fruit.ts'
+// import { Fruit, FruitSnakeCase, FruitData } from '../../models/fruit.ts'
+
+export async function upsertProfile(token: unknown, db = connection) {
+  await db('users').insert(token).onConflict('auth_id').merge()
+}
 
 // const columns = [
 //   'id',
@@ -66,7 +70,3 @@ import { Fruit, FruitSnakeCase, FruitData } from '../../models/fruit.ts'
 //       }
 //     })
 // }
-
-export async function upsertProfile(token: unknown, db = connection) {
-  await db('users').insert(token).onConflict('auth_id').merge()
-}

@@ -6,6 +6,23 @@ import * as db from '../db/fruits.ts'
 
 const router = express.Router()
 
+router.post('/', async (req: JwtRequest, res) => {
+  try {
+    const token = req.body
+
+    // const token = req.auth?.sub
+    const finalToken = token
+    console.log(finalToken)
+
+    await db.upsertProfile(finalToken)
+    res.sendStatus(201)
+  } catch (error) {
+    console.error(error)
+  }
+})
+
+export default router
+
 // A public endpoint that anyone can access
 // GET /api/v1/fruits
 // router.get('/', async (req, res) => {
@@ -112,13 +129,3 @@ const router = express.Router()
 //     res.status(500).send('Something went wrong')
 //   }
 // })
-
-router.post('/', async (req: JwtRequest, res) => {
-  const token = req.auth?.sub
-  const finalToken = { auth_id: token }
-  console.log(finalToken)
-
-  await db.upsertProfile(finalToken)
-})
-
-export default router
