@@ -30,6 +30,8 @@ function Nav() {
     return response
   }
 
+  // console.log(user)
+
   getAuthToken()
 
   return (
