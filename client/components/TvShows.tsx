@@ -25,7 +25,6 @@ function TvShows(props: Props) {
               />
             </>
           ))}
-          <h2>Upcoming Movies</h2>
           {trendingShows.map((show) => (
             <>
               <Posters

@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 // import { getMovieById, getTrailerForMovie } from '../api/moviesApi'
 import { getDetailById, getTrailer } from '../api/combinedApi'
