@@ -1,10 +1,7 @@
 import React, { useState } from 'react'
-import { searchShow } from '../api/showsApi'
-import { searchMovie } from '../api/moviesApi'
 import { useNavigate } from 'react-router-dom'
 
 function Search() {
-  const [searchResults, setSearchResults] = useState({})
   const navigate = useNavigate()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -13,20 +10,7 @@ function Search() {
     const search = form.get('search-box')?.valueOf() as string
     navigate(`/results?query=${search}`)
     e.currentTarget.reset()
-    // await searchingTitles(search)
   }
-
-  // async function searchingTitles(string: string) {
-  //   const results = {
-  //     shows: await searchShow(string),
-  //     movies: await searchMovie(string),
-  //   }
-  //   // const stringifySearch = stringify(string)
-  //   // console.log(stringifySearch)
-  //   navigate(`/results?${string}`)
-  //   // setSearchResults(results)
-  //   // console.log(searchResults)
-  // }
 
   return (
     <div>

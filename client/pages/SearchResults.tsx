@@ -42,10 +42,14 @@ function SearchResults() {
       <div className="text-white">{`Results for "${searchTerm}"`}</div>
       <div className="flex flex-wrap gap-4">
         {searchResults.movies.results.map((result) => (
-          <Posters key={result.id} content={result} type={'movie'} />
+          <div key={result.id}>
+            <Posters content={result} type={'movie'} />
+          </div>
         ))}
         {searchResults.shows.results.map((result) => (
-          <Posters key={result.id} content={result} type={'show'} />
+          <div key={result.id}>
+            <Posters content={result} type={'show'} />
+          </div>
         ))}
       </div>
     </div>
