@@ -3,7 +3,6 @@ import { IfAuthenticated, IfNotAuthenticated } from './Authenticated.tsx'
 import { NavGroup, NavButton } from './Styled.tsx'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { postUser } from '../api/userApi.tsx'
 import Search from './Search.tsx'
 
 function Nav() {
@@ -21,19 +20,6 @@ function Nav() {
   function handleNavMenuClick() {
     setToggledNavMenu(!toggledNavMenu)
   }
-
-  async function getAuthToken() {
-    const accessToken = user?.sub
-
-    console.log(accessToken)
-    const response = await postUser(accessToken)
-    console.log(response)
-    return response
-  }
-
-  console.log(user)
-
-  getAuthToken()
 
   return (
     <>
