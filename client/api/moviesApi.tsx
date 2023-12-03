@@ -1,17 +1,12 @@
 import request from 'superagent'
-// import * as dotenv from 'dotenv'
-// dotenv.config()
 
-//const apiKey = process.env.REACT_APP_API_KEY
-
-//need to get dotenv to work
-const apiKey = `eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZDUzNTQzZmYyYzExNGU5YWE3OTA2Mjc5MDI4ZDFkZSIsInN1YiI6IjY1NGM2YmQ4NWE1ZWQwMDBhZDU3ZjIzMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZltBX_pHgpKjChPTr8R8opUykjmeR1GlUuIHTOmJVdA`
+const { VITE_API_KEY } = import.meta.env
 
 export const options = {
   method: 'GET',
   headers: {
     accept: 'application/json',
-    Authorization: `Bearer ${apiKey}`,
+    Authorization: `Bearer ${VITE_API_KEY}`,
   },
 }
 export async function getMovieById(id: number) {
@@ -84,17 +79,4 @@ export async function getMovies() {
     topRated: await getTopRatedMovies(),
     upcoming: await getUpcomingMovies(),
   }
-}
-
-export async function getMovieRunTime(id: number) {
-  const response = await fetch(
-    `https://api.themoviedb.org/3/movie/${id}?language=en-US`,
-    options
-  )
-  const data = await response.json()
-  const runTime = await data.runTime.find(
-    (element: any) => element.type == 'Trailer'
-  )
-  console.log(runTime)
-  return runTime.key
 }

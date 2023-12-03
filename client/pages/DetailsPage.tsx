@@ -20,33 +20,26 @@ function DetailsPage() {
 
   // queryClient.invalidateQueries({ queryKey: ['details'] })
   // queryClient.invalidateQueries({ queryKey: ['trailer'] })
-  async function getDetails() {
-    const result = await getDetailById(type, Number(id))
-    return result
-  }
-
   const { data: trailer } = useQuery({
     queryKey: ['trailer', type, id],
-    queryFn: getTrailerResult,
+    queryFn: () => getTrailer(type as string, Number(id)),
   })
-
-  async function getTrailerResult() {
-    const result = await getTrailer(type, Number(id))
-    return result
-  }
-
   console.log(trailer)
 
   const {
     data: details,
     isLoading,
+    error,
     isError,
   } = useQuery({
     queryKey: ['details', type, id],
-    queryFn: getDetails,
+    queryFn: () => getDetailById(type as string, Number(id)),
   })
   if (isLoading) return <h1>Loading...</h1>
-  if (isError) return console.error(error)
+  if (isError) {
+    console.error(error)
+    return null
+  }
   console.log(details)
 
   return (
