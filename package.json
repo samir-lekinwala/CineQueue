@@ -7,7 +7,6 @@
   "scripts": {
     "start": "node dist/server.js",
     "dev": "run-p dev:server dev:client dev:css",
-    "restart": "npm run knex migrate:latest && npm run knex seed:run",
     "dev:server": "tsx watch server/index.ts",
     "dev:client": "vite",
     "knex": "knex --knexfile server/db/knexfile.js",
