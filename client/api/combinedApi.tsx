@@ -2,7 +2,7 @@ import * as moviesApi from './moviesApi'
 
 const { options } = moviesApi
 
-export async function getTrailer(type: string, id: number) {
+export async function getTrailer(type: string | unknown, id: number) {
   if (type == 'show') {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${id}/videos?language=en-US`,
@@ -26,7 +26,7 @@ export async function getTrailer(type: string, id: number) {
   }
 }
 
-export async function getDetailById(type: string, id: number) {
+export async function getDetailById(type: string | unknown, id: number) {
   if (type == 'show') {
     const response = await fetch(
       `https://api.themoviedb.org/3/tv/${id}?language=en-US`,

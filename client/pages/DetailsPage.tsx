@@ -1,5 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 // import { getMovieById, getTrailerForMovie } from '../api/moviesApi'
 import { getDetailById, getTrailer } from '../api/combinedApi'
@@ -18,8 +18,6 @@ function DetailsPage() {
     queryClient.invalidateQueries(['trailer', type, id])
   }, [queryClient, type, id])
 
-  // queryClient.invalidateQueries({ queryKey: ['details'] })
-  // queryClient.invalidateQueries({ queryKey: ['trailer'] })
   async function getDetails() {
     const result = await getDetailById(type, Number(id))
     return result
@@ -47,7 +45,6 @@ function DetailsPage() {
   })
   if (isLoading) return <h1>Loading...</h1>
   if (isError) return console.error(error)
-  console.log(details)
 
   return (
     <div className="bg-black snap-proximity snap-x snap-start">

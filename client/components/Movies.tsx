@@ -14,38 +14,35 @@ function Movies(props: Props) {
   const tmdbPosterLink = `https://image.tmdb.org/t/p/w500/`
 
   return (
-    <div>
-      <div>
-        <div className="flex flex-wrap gap-4">
-          {popularMovies.map((movie) => (
-            <>
-              <Posters
-                type={`movie`}
-                content={movie}
-                tmdbPosterLink={tmdbPosterLink}
-              />
-            </>
-          ))}
-          <h2>Upcoming Movies</h2>
-          {upcomingMovies.map((movie) => (
-            <>
-              <Posters
-                type={`movie`}
-                content={movie}
-                tmdbPosterLink={tmdbPosterLink}
-              />
-            </>
-          ))}
-          {topRatedMovies.map((movie) => (
-            <>
-              <Posters
-                type={`movie`}
-                content={movie}
-                tmdbPosterLink={tmdbPosterLink}
-              />
-            </>
-          ))}
-        </div>
+    <div className="flex justify-center">
+      <div className="flex flex-wrap gap-4">
+        {popularMovies.map((movie) => (
+          <>
+            <Posters
+              type={`movie`}
+              content={movie}
+              tmdbPosterLink={tmdbPosterLink}
+            />
+          </>
+        ))}
+        {upcomingMovies.map((movie) => (
+          <>
+            <Posters
+              type={`movie`}
+              content={movie}
+              tmdbPosterLink={tmdbPosterLink}
+            />
+          </>
+        ))}
+        {topRatedMovies.map((movie) => (
+          <>
+            <Posters
+              type={`movie`}
+              content={movie}
+              tmdbPosterLink={tmdbPosterLink}
+            />
+          </>
+        ))}
       </div>
     </div>
   )

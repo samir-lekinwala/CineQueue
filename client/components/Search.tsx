@@ -1,14 +1,14 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Search() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate()
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const form = new FormData(e.currentTarget)
     const search = form.get('search-box')?.valueOf() as string
-    // const newTodo = { task: task, completed: false }
-    console.log(search)
-
-    // mutateAddTask.mutate(newTodo)
+    navigate(`/results?query=${search}`)
     e.currentTarget.reset()
   }
 
