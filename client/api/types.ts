@@ -1,85 +1,29 @@
 // Full API return type has not been declared, only properties used
 export type Details = {
+  id: number
   title: string
   overview: string
   poster_path: string
   runtime: number
+  episode_run_time: number
+  number_of_episodes: number
+  number_of_seasons: number
+  name: string
+  last_episode_to_air: object
 }
 
-/**
- *{
-  "adult": false,
-  "backdrop_path": "/tKi5HYDSuxP4I26fxyF2UVvAtLa.jpg",
-  "belongs_to_collection": {
-    "id": 85861,
-    "name": "Beverly Hills Cop Collection",
-    "poster_path": "/whjkHIzJ0Kiei6V7z5NaIyvFKQm.jpg",
-    "backdrop_path": "/lhZQuT76B9YcxZIudXZMhhWCKcl.jpg"
-  },
-  "budget": 14000000,
-  "genres": [
-    {
-      "id": 28,
-      "name": "Action"
-    },
-    {
-      "id": 35,
-      "name": "Comedy"
-    },
-    {
-      "id": 80,
-      "name": "Crime"
-    }
-  ],
-  "homepage": "https://www.paramount.com/movies/beverly-hills-cop",
-  "id": 90,
-  "imdb_id": "tt0086960",
-  "original_language": "en",
-  "original_title": "Beverly Hills Cop",
-  "overview": "Fast-talking, quick-thinking Detroit street cop Axel Foley has bent more than a few rules and regs in his time, but when his best friend is murdered, he heads to sunny Beverly Hills to work the case like only he can.",
-  "popularity": 27.355,
-  "poster_path": "/eBJEvKkhQ0tUt1dBAcTEYW6kCle.jpg",
-  "production_companies": [
-    {
-      "id": 4,
-      "logo_path": "/gz66EfNoYPqHTYI4q9UEN4CbHRc.png",
-      "name": "Paramount",
-      "origin_country": "US"
-    },
-    {
-      "id": 30,
-      "logo_path": null,
-      "name": "Eddie Murphy Productions",
-      "origin_country": "US"
-    },
-    {
-      "id": 10288,
-      "logo_path": null,
-      "name": "Don Simpson/Jerry Bruckheimer Films",
-      "origin_country": "US"
-    }
-  ],
-  "production_countries": [
-    {
-      "iso_3166_1": "US",
-      "name": "United States of America"
-    }
-  ],
-  "release_date": "1984-12-05",
-  "revenue": 316360478,
-  "runtime": 105,
-  "spoken_languages": [
-    {
-      "english_name": "English",
-      "iso_639_1": "en",
-      "name": "English"
-    }
-  ],
-  "status": "Released",
-  "tagline": "The heat is on!",
-  "title": "Beverly Hills Cop",
-  "video": false,
-  "vote_average": 7.186,
-  "vote_count": 3684
-}
- */
+// "last_episode_to_air": {
+//   "id": 62161,
+//   "name": "Felina",
+//   "overview": "All bad things must come to an end.",
+//   "vote_average": 9.287,
+//   "vote_count": 202,
+//   "air_date": "2013-09-29",
+//   "episode_number": 16,
+//   "episode_type": "finale",
+//   "production_code": "",
+//   "runtime": 56,
+//   "season_number": 5,
+//   "show_id": 1396,
+//   "still_path": "/pA0YwyhvdDXP3BEGL2grrIhq8aM.jpg"
+// }
