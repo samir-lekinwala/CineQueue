@@ -15,8 +15,11 @@ function Movies(props: Props) {
   return (
     <div>
       <div>
+        <p className="text-white">Popular Movies</p>
         <Carousel contentList={popularMovies} />
+        <p className="text-white">Upcoming Movies</p>
         <Carousel contentList={upcomingMovies} />
+        <p className="text-white">Top Rated Movies</p>
         <Carousel contentList={topRatedMovies} />
       </div>
     </div>

@@ -6,8 +6,8 @@ function Carousel(props: Props) {
 
   return (
     <>
-      <div className="carousel-container relative overflow-hidden">
-        <div className="carousel-wrapper flex">
+      <div className="carousel-container relative overflow-x-auto">
+        <div className="carousel-wrapper flex gap-4">
           {/* <div className="flex justify-center">
       <div className="flex flex-wrap gap-4"> */}
           {props.contentList.map((movie, index) => (
