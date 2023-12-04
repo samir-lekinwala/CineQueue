@@ -37,7 +37,7 @@ function Nav() {
   return (
     <>
       <nav className=" border-gray-200 bg-black h-15">
-        <div className="max-w-screen-xl flex items-center justify-between mx-auto p-4">
+        <div className="max-w-full flex items-center justify-between mx-auto p-4">
           {/* Image and Link to the far left */}
           <div className="flex items-start space-x-3">
             <Link
