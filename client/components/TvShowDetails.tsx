@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { Details } from '../api/types'
 const { VITE_API_KEY } = import.meta.env
 
@@ -6,6 +7,33 @@ interface Props {
 }
 
 function TvShowDetails(props: Props) {
+  const {
+    data: runtime,
+    isLoading,
+    error,
+    isError,
+  } = useQuery({
+    queryKey: ['runtime', props],
+    queryFn: getRunTime,
+  })
+  if (isLoading) return <h1>Loading...</h1>
+  if (isError) {
+    console.error(error)
+    return null
+  }
+
+  console.log('props', runtime)
+
+  function getRunTime() {
+    const episodeRunTime = props.details.episode_run_time
+    const lastEpisodeRunTime = props.details.last_episode_to_air.runtime
+    //turn result into an object that can also out last episode to air runtime.
+    return {
+      episodeRunTime: episodeRunTime,
+      lastEpisodeRunTime: lastEpisodeRunTime,
+    }
+  }
+
   const apiURL = 'https://api.themoviedb.org/3/tv'
   async function getTVShowDetails(id: number) {
     try {
