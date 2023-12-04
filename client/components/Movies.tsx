@@ -21,21 +21,21 @@ function Movies(props: Props) {
     <div>
       <div>
         <p className="text-white">Popular Movies</p>
-        <Carousel contentList={popularMovies} />
+        <Carousel type={'movie'} contentList={popularMovies} />
         <p className="text-white">Upcoming Movies</p>
-        <Carousel contentList={upcomingMovies} />
+        <Carousel type={'movie'} contentList={upcomingMovies} />
         <p className="text-white">Top Rated Movies</p>
-        <Carousel contentList={topRatedMovies} />
+        <Carousel type={'movie'} contentList={topRatedMovies} />
         <p className="text-white">Comedy</p>
-        <Carousel contentList={comedy} />
+        <Carousel type={'movie'} contentList={comedy} />
         <p className="text-white">Action</p>
-        <Carousel contentList={action} />
+        <Carousel type={'movie'} contentList={action} />
         <p className="text-white">Horror</p>
-        <Carousel contentList={horror} />
+        <Carousel type={'movie'} contentList={horror} />
         <p className="text-white">Adventure</p>
-        <Carousel contentList={adventure} />
+        <Carousel type={'movie'} contentList={adventure} />
         <p className="text-white">Animation</p>
-        <Carousel contentList={animation} />
+        <Carousel type={'movie'} contentList={animation} />
       </div>
     </div>
   )

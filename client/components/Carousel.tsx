@@ -11,7 +11,7 @@ function Carousel(props: Props) {
 
   return (
     <>
-      <div className="carousel-container relative overflow-x-auto">
+      <div className="carousel-container relative overflow-x-auto no-scrollbar">
         <div className="carousel-wrapper flex gap-4">
           {/* <div className="flex justify-center">
       <div className="flex flex-wrap gap-4"> */}
