@@ -1,5 +1,6 @@
 import React from 'react'
 import Posters from './Posters'
+import Carousel from './Carousel'
 
 interface Props {
   shows: any
@@ -10,40 +11,15 @@ function TvShows(props: Props) {
   const trendingShows = props.shows.trending.results
   const topRatedShows = props.shows.topRated.results
 
-  const tmdbPosterLink = `https://image.tmdb.org/t/p/w500/`
-
   return (
     <div>
       <div>
-        <div className="flex flex-wrap gap-4">
-          {topRatedShows.map((show) => (
-            <>
-              <Posters
-                type={`show`}
-                content={show}
-                tmdbPosterLink={tmdbPosterLink}
-              />
-            </>
-          ))}
-          {trendingShows.map((show) => (
-            <>
-              <Posters
-                type={`show`}
-                content={show}
-                tmdbPosterLink={tmdbPosterLink}
-              />
-            </>
-          ))}
-          {popularShows.map((show) => (
-            <>
-              <Posters
-                type={`show`}
-                content={show}
-                tmdbPosterLink={tmdbPosterLink}
-              />
-            </>
-          ))}
-        </div>
+        <p className="text-white">Top Rated Shows</p>
+        <Carousel contentList={topRatedShows} />
+        <p className="text-white">Popular Shows</p>
+        <Carousel contentList={popularShows} />
+        <p className="text-white">Trending Shows</p>
+        <Carousel contentList={trendingShows} />
       </div>
     </div>
   )
