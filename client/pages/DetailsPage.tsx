@@ -18,8 +18,6 @@ function DetailsPage() {
     queryClient.invalidateQueries(['trailer', type, id])
   }, [queryClient, type, id])
 
-  // queryClient.invalidateQueries({ queryKey: ['details'] })
-  // queryClient.invalidateQueries({ queryKey: ['trailer'] })
   const { data: trailer } = useQuery({
     queryKey: ['trailer', type, id],
     queryFn: () => getTrailer(type as string, Number(id)),

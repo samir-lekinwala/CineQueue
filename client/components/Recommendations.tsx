@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getRecomendationsById } from '../api/combinedApi'
 import Posters from './Posters'
 import { useEffect } from 'react'
+import Carousel from './Carousel'
 
 interface Props {
   type: string
@@ -48,9 +49,11 @@ function Recommendations(props: Props) {
           Recomendations
         </h3>
         <div className="flex gap-1 rounded">
-          {details.results.map((content) => (
+          <Carousel contentList={details.results} />
+
+          {/* {details.results.map((content) => (
             <Posters type={type} key={content.id} content={content} />
-          ))}
+          ))} */}
         </div>
       </div>
     </div>
