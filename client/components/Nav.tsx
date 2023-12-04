@@ -1,13 +1,13 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { IfAuthenticated, IfNotAuthenticated } from './Authenticated.tsx'
 import { NavGroup, NavButton } from './Styled.tsx'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { postUser } from '../api/userApi.tsx'
 import Search from './Search.tsx'
+import { postUser } from '../api/userApi.tsx'
 
 function Nav() {
-  const { user, logout, loginWithRedirect } = useAuth0()
+  const { user, logout, loginWithRedirect, getAccessTokenSilently } = useAuth0()
   const [toggledNavMenu, setToggledNavMenu] = useState(false)
 
   const handleSignOut = () => {
@@ -22,18 +22,17 @@ function Nav() {
     setToggledNavMenu(!toggledNavMenu)
   }
 
-  async function getAuthToken() {
-    const accessToken = user?.sub
+  async function handleToken() {
+    // const token = user?.sub
+    const token = await getAccessTokenSilently()
+    console.log(token)
 
-    console.log(accessToken)
-    const response = await postUser(accessToken)
-    console.log(response)
-    return response
+    await postUser(token)
   }
 
-  console.log(user)
-
-  getAuthToken()
+  useEffect(() => {
+    handleToken()
+  })
 
   return (
     <>

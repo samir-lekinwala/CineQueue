@@ -1,23 +1,26 @@
 import express from 'express'
 // import { FruitData } from '../../models/fruit.ts'
-import { JwtRequest } from '../auth0.ts'
+import checkJwt, { JwtRequest } from '../auth0.ts'
 
 import * as db from '../db/fruits.ts'
 
 const router = express.Router()
 
-router.post('/', async (req: JwtRequest, res) => {
+router.post('/', checkJwt, async (req: JwtRequest, res) => {
   try {
-    const token = req.body
+    const userData = req.body
 
-    // const token = req.auth?.sub
-    const finalToken = token
-    console.log(finalToken)
+    const auth0Id = req.auth?.sub
+    const user = {
+      auth_id: auth0Id,
+      ...userData,
+    }
 
-    await db.upsertProfile(finalToken)
+    await db.upsertProfile(user)
     res.sendStatus(201)
   } catch (error) {
     console.error(error)
+    res.status(500).json({ message: error })
   }
 })
 

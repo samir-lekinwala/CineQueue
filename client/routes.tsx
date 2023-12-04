@@ -6,6 +6,7 @@ import DetailsPage from './pages/DetailsPage.tsx'
 import Seen from './pages/Seen.tsx'
 import Watchlist from './pages/Watchlist.tsx'
 import Dashboard from './pages/Dashboard.tsx'
+import SearchResults from './pages/SearchResults.tsx'
 
 export const routes = createRoutesFromElements(
   <Route path="/" element={<AppLayout />}>
@@ -14,5 +15,6 @@ export const routes = createRoutesFromElements(
     <Route path="seen" element={<Seen />} />
     <Route path="watchlist" element={<Watchlist />} />
     <Route path="dashboard" element={<Dashboard />} />
+    <Route path="results" element={<SearchResults />} />
   </Route>
 )

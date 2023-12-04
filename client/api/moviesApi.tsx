@@ -1,15 +1,12 @@
 import request from 'superagent'
-// import * as dotenv from 'dotenv'
-// dotenv.config()
 
-//need to get dotenv to work
-const apiKey = `eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZDUzNTQzZmYyYzExNGU5YWE3OTA2Mjc5MDI4ZDFkZSIsInN1YiI6IjY1NGM2YmQ4NWE1ZWQwMDBhZDU3ZjIzMiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ZltBX_pHgpKjChPTr8R8opUykjmeR1GlUuIHTOmJVdA`
+const { VITE_API_KEY } = import.meta.env
 
 export const options = {
   method: 'GET',
   headers: {
     accept: 'application/json',
-    Authorization: `Bearer ${apiKey}`,
+    Authorization: `Bearer ${VITE_API_KEY}`,
   },
 }
 export async function getMovieById(id: number) {

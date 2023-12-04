@@ -22,13 +22,17 @@ function Recommendations(props: Props) {
   const {
     data: details,
     isLoading,
+    error,
     isError,
   } = useQuery({
     queryKey: ['recomendations'],
     queryFn: getRecomendations,
   })
   if (isLoading) return <h1>Loading...</h1>
-  if (isError) return console.error(error)
+  if (isError) {
+    console.error(error)
+    return null
+  }
 
   console.log('Recomendations', details)
 
