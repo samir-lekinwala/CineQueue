@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React, { useState } from 'react'
+
 import { useQuery } from '@tanstack/react-query'
 import { Details } from '../api/types'
 const { VITE_API_KEY } = import.meta.env
@@ -18,7 +20,9 @@ interface Props {
 
 function TvShowDetails(props: Props) {
   const { details } = props
+
   const [userInput, setUserInput] = useState<number | ''>('')
+
   const {
     data: runtime,
     isLoading,
@@ -53,6 +57,7 @@ function TvShowDetails(props: Props) {
       finalRuntime = 'Not Avilable'
     }
 
+
     const totalShowRunTime = Math.round(
       (finalRuntime * details.number_of_episodes) / 60
     )
@@ -64,11 +69,16 @@ function TvShowDetails(props: Props) {
     }
     console.log('user', userInput)
     console.log('time', daysToWatchShow)
+    console.log('Runtime:', episodeRunTime)
+    console.log('Runtime1:', lastEpisodeRunTime)
+    console.log('Runtime2:', finalRuntime)
+
 
     return {
       episodeRunTime: episodeRunTime,
       lastEpisodeRunTime: lastEpisodeRunTime,
       finalRuntime: finalRuntime,
+
       totalShowRunTime: totalShowRunTime,
       daysToWatchShow: daysToWatchShow,
       userInput: userInput,
@@ -103,6 +113,13 @@ function TvShowDetails(props: Props) {
           <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
             Add to completed
           </button>
+
+          <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+            Runtime: {runtime.finalRuntime} minutes <br />
+            Total Number of Episodes: {details.number_of_episodes} <br />
+            Total Number of Seasons: {details.number_of_seasons}
+          </button>
+
         </div>
         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
           <img
@@ -148,3 +165,4 @@ function TvShowDetails(props: Props) {
   )
 }
 export default TvShowDetails
+

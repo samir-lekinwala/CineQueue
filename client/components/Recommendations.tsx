@@ -49,7 +49,7 @@ function Recommendations(props: Props) {
           Recomendations
         </h3>
         <div className="flex gap-1 rounded">
-          <Carousel contentList={details.results} />
+          <Carousel type={type} contentList={details.results} />
 
           {/* {details.results.map((content) => (
             <Posters type={type} key={content.id} content={content} />

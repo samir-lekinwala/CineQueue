@@ -66,10 +66,24 @@ export async function getTrailerForShow(id: number) {
   return result.key
 }
 
-console.log('tv show trailer ', getTrailerForShow(1429))
+export async function getShowsByGenre(genreId: number) {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_null_first_air_dates=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${genreId}`,
+    options
+  )
+  const data = await response.json()
+  return data
+}
+
+// console.log('tv show trailer ', getTrailerForShow(1429))
 
 export async function getTvShows() {
   return {
+    comedy: await getShowsByGenre(35),
+    action: await getShowsByGenre(10764),
+    drama: await getShowsByGenre(18),
+    animation: await getShowsByGenre(16),
+    actionAndAdventure: await getShowsByGenre(10759),
     topRated: await getTopRatedTvShows(),
     popular: await getPopularTvShows(),
     trending: await getTrendingTvShows(),
