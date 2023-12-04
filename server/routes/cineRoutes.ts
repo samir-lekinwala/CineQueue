@@ -2,7 +2,7 @@ import express from 'express'
 // import { FruitData } from '../../models/fruit.ts'
 import checkJwt, { JwtRequest } from '../auth0.ts'
 
-import * as db from '../db/fruits.ts'
+import * as db from '../db/db.ts'
 
 const router = express.Router()
 
