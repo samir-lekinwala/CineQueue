@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { Details } from '../api/types'
 
 interface Props {

@@ -1,7 +1,40 @@
-import React from 'react'
+import { Details } from '../api/types'
+const { VITE_API_KEY } = import.meta.env
+
+interface Props {
+  details: Details
+}
 
 function TvShowDetails(props: Props) {
+  const apiURL = 'https://api.themoviedb.org/3/tv'
+  async function getTVShowDetails(id: number) {
+    try {
+      const response = await fetch(`${apiURL}/${id}?api_key=${VITE_API_KEY}`)
+      const data = await response.json()
+
+      // Check if last_episode_to_air exists in the response
+      if (data.last_episode_to_air) {
+        const runtime = data.last_episode_to_air.runtime
+        return runtime
+      } else {
+        console.error('last_episode_to_air not found in the API response')
+        return null
+      }
+    } catch (error) {
+      console.error('An error occurred:', error)
+      throw error
+    }
+  }
   const { details } = props
+  getTVShowDetails(details.id)
+    .then((runtime) => {
+      if (runtime !== null) {
+        console.log('TV Show Runtime:', runtime)
+      }
+    })
+    .catch((error) => {
+      console.error('An error occurred:', error)
+    })
 
   return (
     <section className="bg-black">
@@ -32,7 +65,9 @@ function TvShowDetails(props: Props) {
             Add to completed
           </button>
           <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-            Runtime: 300 minutes
+            Runtime: minutes <br />
+            Total Number of Episodes: {details.number_of_episodes} <br />
+            Total Number of Seasons: {details.number_of_seasons}
           </button>
         </div>
         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">

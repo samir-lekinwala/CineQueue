@@ -1,5 +1,3 @@
-import request from 'superagent'
-
 const { VITE_API_KEY } = import.meta.env
 
 export const options = {
