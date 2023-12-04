@@ -73,8 +73,22 @@ export async function getTrailerForMovie(id: number) {
   // return data
 }
 
+export async function getMoviesByGenre(genreId: number) {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${genreId}`,
+    options
+  )
+  const data = await response.json()
+  return data
+}
+
 export async function getMovies() {
   return {
+    comedy: await getMoviesByGenre(35),
+    action: await getMoviesByGenre(28),
+    adventure: await getMoviesByGenre(12),
+    animation: await getMoviesByGenre(16),
+    horror: await getMoviesByGenre(27),
     popular: await getPopularMovies(),
     topRated: await getTopRatedMovies(),
     upcoming: await getUpcomingMovies(),
