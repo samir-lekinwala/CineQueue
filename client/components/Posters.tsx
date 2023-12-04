@@ -34,11 +34,11 @@ function Posters(props: Props) {
             </div>
           </>
         ) : (
-          <div>
+          <div className="flex gap">
             <img
               src={`${tmdbPosterLink}${content.poster_path}`}
               alt=""
-              className="w-52 rounded dark:shadow-gray-800"
+              className="w-52 rounded"
             />
           </div>
         )}
