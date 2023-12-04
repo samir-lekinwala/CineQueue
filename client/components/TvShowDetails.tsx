@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Details } from '../api/types'
 const { VITE_API_KEY } = import.meta.env
@@ -17,6 +18,7 @@ interface Props {
 
 function TvShowDetails(props: Props) {
   const { details } = props
+  const [userInput, setUserInput] = useState<number | ''>('')
   const {
     data: runtime,
     isLoading,
@@ -50,14 +52,26 @@ function TvShowDetails(props: Props) {
     } else {
       finalRuntime = 'Not Avilable'
     }
-    console.log('Runtime:', episodeRunTime)
-    console.log('Runtime1:', lastEpisodeRunTime)
-    console.log('Runtime2:', finalRuntime)
+
+    const totalShowRunTime = Math.round(
+      (finalRuntime * details.number_of_episodes) / 60
+    )
+
+    let daysToWatchShow = ''
+    if (userInput !== '' && !isNaN(userInput)) {
+      // Check if userInput is not blank and is a valid number
+      daysToWatchShow = Math.round((totalShowRunTime * 60) / userInput)
+    }
+    console.log('user', userInput)
+    console.log('time', daysToWatchShow)
 
     return {
       episodeRunTime: episodeRunTime,
       lastEpisodeRunTime: lastEpisodeRunTime,
       finalRuntime: finalRuntime,
+      totalShowRunTime: totalShowRunTime,
+      daysToWatchShow: daysToWatchShow,
+      userInput: userInput,
     }
   }
 
@@ -89,11 +103,6 @@ function TvShowDetails(props: Props) {
           <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
             Add to completed
           </button>
-          <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-            Runtime: {runtime.finalRuntime} minutes <br />
-            Total Number of Episodes: {details.number_of_episodes} <br />
-            Total Number of Seasons: {details.number_of_seasons}
-          </button>
         </div>
         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
           <img
@@ -102,52 +111,40 @@ function TvShowDetails(props: Props) {
             className="rounded"
           />
         </div>
+        <div className="lg:col-span-7">
+          <div className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:focus:ring-gray-800">
+            Average Episode runtime in minutes: {runtime.finalRuntime} <br />
+            Total Number of Episodes: {details.number_of_episodes} <br />
+            Total Number of Seasons: {details.number_of_seasons} <br />
+            Total hours to watch the show: {runtime.totalShowRunTime}
+            <br />
+            Days to watch with {runtime.userInput} minutes daily:
+            {runtime.daysToWatchShow}
+            <label
+              htmlFor="userInput"
+              className="block mt-4 text-gray-500 dark:text-gray-400"
+            >
+              Avaiability:
+            </label>
+            <input
+              type="number"
+              id="userInput"
+              name="userInput"
+              placeholder="minutes daily"
+              value={userInput}
+              onChange={(e) => {
+                const value = e.target.value
+                if (value.length === 1 && value === '0') {
+                  return
+                }
+                setUserInput(Number(value))
+              }}
+              className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+            />
+          </div>
+        </div>
       </div>
     </section>
   )
 }
 export default TvShowDetails
-
-{
-  /* <div>
-<img
-  alt={`${details.name} poster`}
-  src={`https://image.tmdb.org/t/p/w500/${details.poster_path}`}
-></img>
-<h1>{details.name}</h1>
-<p>{details.overview}</p>
-</div> */
-}
-
-// "last_episode_to_air": {
-//   "id": 62161,
-//   "name": "Felina",
-//   "overview": "All bad things must come to an end.",
-//   "vote_average": 9.287,
-//   "vote_count": 202,
-//   "air_date": "2013-09-29",
-//   "episode_number": 16,
-//   "episode_type": "finale",
-//   "production_code": "",
-//   "runtime": 56,
-//   "season_number": 5,
-//   "show_id": 1396,
-//   "still_path": "/pA0YwyhvdDXP3BEGL2grrIhq8aM.jpg"
-// }
-
-// Function to fetch TV show details, including runtime
-// const apiURL = 'https://api.themoviedb.org/3/tv'
-// async function getTVShowDetails(id: number) {
-//   const response = await fetch(`${apiURL}/${id}?api_key=${VITE_API_KEY}`)
-//   const data = await response.json()
-//   const runtime = data.last_episode_to_air.runtime
-//   return runtime
-// }
-
-// getTVShowDetails({details.id})
-//   .then((runtime) => {
-//     console.log('TV Show Runtime:', runtime)
-//   })
-//   .catch((error) => {
-//     console.error('An error occurred:', error)
-//   })
