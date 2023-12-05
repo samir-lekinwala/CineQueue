@@ -15,6 +15,16 @@ export async function insertIntoWatchlistDb(
   await db('watchlist').insert(watchlistItem)
 }
 
+export async function deleteFromWatchlist(
+  watchlistItem: WatchlistData,
+  db = connection
+) {
+  return await db('watchlist')
+    .where('auth_id', watchlistItem.auth_id)
+    .where('content_id', watchlistItem.content_id)
+    .del()
+}
+
 export async function upsertProfile(user: User, db = connection) {
   await db('users').insert(user).onConflict('auth_id').merge()
 }

@@ -17,6 +17,13 @@ export async function addToWatchlist(item: WatchlistData, token: string) {
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
     .send(item)
+}
+export async function deleteFromWatchlist(item: WatchlistData, token: string) {
+  await request
+    .delete(watchlistUrl)
+    .set('Authorization', `Bearer ${token}`)
+    .set('Content-Type', 'application/json')
+    .send(item)
   console.log('api working?', item, token)
 }
 

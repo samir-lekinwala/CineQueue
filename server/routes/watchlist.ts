@@ -26,6 +26,23 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
     res.status(500).json({ message: error })
   }
 })
+router.delete('/', checkJwt, async (req: JwtRequest, res) => {
+  try {
+    const userData = req.body
+    const auth0Id = req.auth?.sub
+    const watchlist = {
+      auth_id: auth0Id,
+      ...userData,
+    } as WatchlistData
+    console.log('from server side: ', userData)
+
+    await db.deleteFromWatchlist(watchlist)
+    res.sendStatus(200)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: error })
+  }
+})
 
 //todo - adjust function to get status of items on watchlist
 router.get('/', checkJwt, async (req: JwtRequest, res) => {

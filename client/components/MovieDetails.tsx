@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { Details } from '../api/types'
-import { addToWatchlist, getWatchlist } from '../api/dbApi'
+import { addToWatchlist, deleteFromWatchlist, getWatchlist } from '../api/dbApi'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
@@ -67,6 +67,13 @@ function MovieDetails(props: Props) {
     queryClient.invalidateQueries(['watchlistChecker'])
   }
 
+  async function handleWatchListClickDelete() {
+    const token = await getAccessTokenSilently()
+    await deleteFromWatchlist(toWatchList, token)
+    console.log(toWatchList)
+    queryClient.invalidateQueries(['watchlistChecker'])
+  }
+
   function onWatchlistChecker() {
     const result = watchlist.filter((item) => item.content_id == details.id)
     console.log('result: ', result)
@@ -117,7 +124,7 @@ function MovieDetails(props: Props) {
               </button>
             ) : (
               <button
-                onClick={handleWatchListClick}
+                onClick={handleWatchListClickDelete}
                 className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
               >
                 Watchlisted
