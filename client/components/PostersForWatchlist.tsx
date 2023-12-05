@@ -2,9 +2,14 @@ import { NavHashLink } from 'react-router-hash-link'
 import { getDetailById } from '../api/combinedApi'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
+import { useAuth0 } from '@auth0/auth0-react'
+import { deleteFromWatchlist } from '../api/dbApi'
 
 function PostersForWatchlist(props: Props) {
   const { type, id } = props
+
+  const { user, getAccessTokenSilently } = useAuth0()
+  const auth0Id = user?.sub
   const tmdbPosterLink = `https://image.tmdb.org/t/p/w500/`
 
   console.log(id, type)
@@ -28,7 +33,7 @@ function PostersForWatchlist(props: Props) {
     error,
     isError,
   } = useQuery({
-    queryKey: ['watchlistContent', id],
+    queryKey: ['watchlistContent', 'watchlistChecker', id],
     queryFn: getContentDetails,
   })
   if (isLoading) return <h1>Loading...</h1>
@@ -50,6 +55,19 @@ function PostersForWatchlist(props: Props) {
     } else return 'Release date unknown'
   }
 
+  const toWatchList = {
+    content_id: content.id,
+    movie_or_show: type,
+    auth_id: auth0Id,
+  }
+
+  async function handleWatchListClickDelete() {
+    const token = await getAccessTokenSilently()
+    await deleteFromWatchlist(toWatchList, token)
+    // console.log(toWatchList)
+    queryClient.invalidateQueries(['watchlistChecker'])
+  }
+
   return (
     <div>
       <NavHashLink to={`/details/${type}/${content.id}#trailer`}>
@@ -68,15 +86,23 @@ function PostersForWatchlist(props: Props) {
             </div>
           </>
         ) : (
-          <div className="flex gap">
-            <img
-              src={`${tmdbPosterLink}${content.poster_path}`}
-              alt=""
-              className="w-52 rounded"
-            />
-          </div>
+          <>
+            <div className="flex gap">
+              <img
+                src={`${tmdbPosterLink}${content.poster_path}`}
+                alt=""
+                className="w-52 rounded"
+              />
+            </div>
+          </>
         )}
       </NavHashLink>
+      <button
+        onClick={handleWatchListClickDelete}
+        className="text-[#be123c] text-center"
+      >
+        X
+      </button>
       {/* <p>{`ID: ${content.id}`}</p> */}
     </div>
   )

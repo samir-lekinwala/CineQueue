@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Details } from '../api/types'
-import { addToWatchlist, getWatchlist } from '../api/dbApi'
+import { addToWatchlist, deleteFromWatchlist, getWatchlist } from '../api/dbApi'
 import { useAuth0 } from '@auth0/auth0-react'
 const { VITE_API_KEY } = import.meta.env
 
@@ -67,6 +67,13 @@ function TvShowDetails(props: Props) {
   async function handleWatchListClick() {
     const token = await getAccessTokenSilently()
     await addToWatchlist(toWatchList, token)
+    queryClient.invalidateQueries(['watchlistChecker'])
+  }
+
+  async function handleWatchListClickDelete() {
+    const token = await getAccessTokenSilently()
+    await deleteFromWatchlist(toWatchList, token)
+    console.log(toWatchList)
     queryClient.invalidateQueries(['watchlistChecker'])
   }
 
@@ -173,13 +180,13 @@ function TvShowDetails(props: Props) {
             </button>
           ) : (
             <button
-              onClick={handleWatchListClick}
+              onClick={handleWatchListClickDelete}
               className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
             >
               Watchlisted
               <svg
                 className="w-5 h-5 ml-2 -mr-1"
-                fill="currentColor"
+                fill="#008000"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
               >
