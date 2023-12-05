@@ -222,12 +222,13 @@ function TvShowDetails(props: Props) {
         </div>
         <div className="lg:col-span-7">
           <div className="inline-flex items-center justify-center px-0 py-1 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:focus:ring-gray-800">
-            Average Episode runtime in minutes: {runtime.finalRuntime} <br />
-            Total Number of Episodes: {details.number_of_episodes} <br />
-            Total Number of Seasons: {details.number_of_seasons} <br />
-            Total hours to watch the show: {runtime.totalShowRunTime}
-            <br />
-            Days to watch with {runtime.userInput} minutes daily:
+            Average Episode runtime: {runtime.finalRuntime} minutes <br />
+            {/* Total Number of Episodes: {details.number_of_episodes} <br />
+            Total Number of Seasons: {details.number_of_seasons} <br /> */}
+            {/* Total hours to watch the show: {runtime.totalShowRunTime}
+            <br /> */}
+            Days to watch:
+            {/* {runtime.userInput}: */}
             {runtime.daysToWatchShow}
             <label
               htmlFor="userInput"
@@ -239,7 +240,7 @@ function TvShowDetails(props: Props) {
               type="number"
               id="userInput"
               name="userInput"
-              placeholder="minutes daily"
+              placeholder="Availability in minutes daily"
               value={userInput}
               onChange={(e) => {
                 const value = e.target.value
