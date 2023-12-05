@@ -25,7 +25,7 @@ function Nav() {
   async function handleToken() {
     // const token = user?.sub
     const token = await getAccessTokenSilently()
-    console.log(token)
+    // console.log(token)
 
     await postUser(token)
   }
