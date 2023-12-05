@@ -1,3 +1,4 @@
+import { WatchlistData } from '../../client/models/models.ts'
 import connection from './connection.ts'
 // import { Fruit, FruitSnakeCase, FruitData } from '../../models/fruit.ts'
 
@@ -7,9 +8,11 @@ interface User {
   time_to_watch: number
 }
 
-interface Watchlist {
-  content_id: number
-  auth_id: string
+export async function insertIntoWatchlistDb(
+  watchlistItem: WatchlistData,
+  db = connection
+) {
+  await db('watchlist').insert(watchlistItem)
 }
 
 export async function upsertProfile(user: User, db = connection) {
@@ -17,12 +20,5 @@ export async function upsertProfile(user: User, db = connection) {
 }
 
 export async function getWatchlist(authId: string, db = connection) {
-  await db('users').where('auth_id', authId).select()
-}
-
-export async function insertIntoWatchlistDb(
-  watchlistItem: Watchlist,
-  db = connection
-) {
-  await db('watchlist').insert(watchlistItem)
+  return await db('watchlist').where('auth_id', authId).select()
 }

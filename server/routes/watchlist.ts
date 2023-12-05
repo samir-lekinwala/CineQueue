@@ -3,6 +3,7 @@ import express from 'express'
 import checkJwt, { JwtRequest } from '../auth0.ts'
 
 import * as db from '../db/db.ts'
+import { WatchlistData } from '../../client/models/models.ts'
 
 const router = express.Router()
 
@@ -12,12 +13,13 @@ const router = express.Router()
 router.post('/', checkJwt, async (req: JwtRequest, res) => {
   try {
     const userData = req.body
-
+    console.log('userData', userData)
     const auth0Id = req.auth?.sub
+    console.log('auth:', auth0Id)
     const watchlist = {
       auth_id: auth0Id,
       ...userData,
-    }
+    } as WatchlistData
 
     await db.insertIntoWatchlistDb(watchlist)
     res.sendStatus(201)
@@ -28,18 +30,18 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
 })
 
 //todo - adjust function to get status of items on watchlist
-router.get('/', async (req, res) => {
+router.get('/', checkJwt, async (req: JwtRequest, res) => {
   try {
     // const userData = req.body
 
-    const auth0Id = '2'
+    const auth0Id = req.auth?.sub
     const user = {
       auth_id: auth0Id,
       // ...userData,
     }
 
-    await db.getWatchlist(auth0Id)
-    res.sendStatus(201)
+    const result = await db.getWatchlist(auth0Id)
+    res.status(200).json(result)
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: error })

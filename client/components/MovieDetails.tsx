@@ -1,4 +1,6 @@
+import { useAuth0 } from '@auth0/auth0-react'
 import { Details } from '../api/types'
+import { addToWatchlist } from '../api/dbApi'
 
 interface Props {
   details: Details
@@ -6,6 +8,25 @@ interface Props {
 
 function MovieDetails(props: Props) {
   const { details } = props
+
+  const { user, getAccessTokenSilently } = useAuth0()
+  const auth0Id = user?.sub
+
+  // console.log('user: ', user?.sub)
+  const toWatchList = {
+    content_id: details.id,
+    movie_or_show: 'movie',
+    auth_id: auth0Id,
+  }
+
+  console.log('towatchlist: ', toWatchList)
+
+  //function to add to watchlist
+
+  async function handleWatchListClick() {
+    const token = await getAccessTokenSilently()
+    await addToWatchlist(toWatchList, token)
+  }
 
   return (
     // <div className="grid grid-flow-col auto-cols-max">
@@ -25,7 +46,10 @@ function MovieDetails(props: Props) {
             {details.overview}
           </p>
           <div className="gap-7">
-            <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+            <button
+              onClick={handleWatchListClick}
+              className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+            >
               Add to Watchlist
               <svg
                 className="w-5 h-5 ml-2 -mr-1"
