@@ -4,6 +4,8 @@ import React, { useState } from 'react'
 
 import { useQuery } from '@tanstack/react-query'
 import { Details } from '../api/types'
+import { addToWatchlist } from '../api/dbApi'
+import { useAuth0 } from '@auth0/auth0-react'
 const { VITE_API_KEY } = import.meta.env
 
 export const options = {
@@ -20,6 +22,25 @@ interface Props {
 
 function TvShowDetails(props: Props) {
   const { details } = props
+
+  const { user, getAccessTokenSilently } = useAuth0()
+  const auth0Id = user?.sub
+
+  // console.log('user: ', user?.sub)
+  const toWatchList = {
+    content_id: details.id,
+    movie_or_show: 'show',
+    auth_id: auth0Id,
+  }
+
+  // console.log('towatchlist: ', toWatchList)
+
+  //function to add to watchlist
+
+  async function handleWatchListClick() {
+    const token = await getAccessTokenSilently()
+    await addToWatchlist(toWatchList, token)
+  }
 
   const [userInput, setUserInput] = useState<number | ''>('')
 
@@ -57,7 +78,6 @@ function TvShowDetails(props: Props) {
       finalRuntime = 'Not Avilable'
     }
 
-
     const totalShowRunTime = Math.round(
       (finalRuntime * details.number_of_episodes) / 60
     )
@@ -72,7 +92,6 @@ function TvShowDetails(props: Props) {
     console.log('Runtime:', episodeRunTime)
     console.log('Runtime1:', lastEpisodeRunTime)
     console.log('Runtime2:', finalRuntime)
-
 
     return {
       episodeRunTime: episodeRunTime,
@@ -95,7 +114,10 @@ function TvShowDetails(props: Props) {
           <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
             {details.overview}
           </p>
-          <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+          <button
+            onClick={handleWatchListClick}
+            className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+          >
             Add to watchlist
             <svg
               className="w-5 h-5 ml-2 -mr-1"
@@ -119,7 +141,6 @@ function TvShowDetails(props: Props) {
             Total Number of Episodes: {details.number_of_episodes} <br />
             Total Number of Seasons: {details.number_of_seasons}
           </button>
-
         </div>
         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
           <img
@@ -165,4 +186,3 @@ function TvShowDetails(props: Props) {
   )
 }
 export default TvShowDetails
-

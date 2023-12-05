@@ -1,6 +1,6 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { Details } from '../api/types'
-import { addToWatchlist } from '../api/dbApi'
+import { addToWatchlist, getWatchlist } from '../api/dbApi'
 
 interface Props {
   details: Details
@@ -19,7 +19,13 @@ function MovieDetails(props: Props) {
     auth_id: auth0Id,
   }
 
-  console.log('towatchlist: ', toWatchList)
+  async function checkIfOnWatchlist() {
+    const token = await getAccessTokenSilently()
+    return await getWatchlist(token)
+  }
+  console.log(checkIfOnWatchlist())
+
+  // console.log('towatchlist: ', toWatchList)
 
   //function to add to watchlist
 

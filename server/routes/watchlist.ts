@@ -13,9 +13,7 @@ const router = express.Router()
 router.post('/', checkJwt, async (req: JwtRequest, res) => {
   try {
     const userData = req.body
-    console.log('userData', userData)
     const auth0Id = req.auth?.sub
-    console.log('auth:', auth0Id)
     const watchlist = {
       auth_id: auth0Id,
       ...userData,
@@ -35,10 +33,10 @@ router.get('/', checkJwt, async (req: JwtRequest, res) => {
     // const userData = req.body
 
     const auth0Id = req.auth?.sub
-    const user = {
-      auth_id: auth0Id,
-      // ...userData,
-    }
+    // const user = {
+    //   auth_id: auth0Id,
+    //   // ...userData,
+    // }
 
     const result = await db.getWatchlist(auth0Id)
     res.status(200).json(result)
