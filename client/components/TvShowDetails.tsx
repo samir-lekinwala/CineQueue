@@ -156,6 +156,10 @@ function TvShowDetails(props: Props) {
           <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl dark:text-white">
             {details.name}
           </h1>
+          <p className="text-white font-medium text-base my-4">
+            Episodes: <strong>{details.number_of_episodes}</strong> Seasons:{' '}
+            <strong>{details.number_of_seasons}</strong>
+          </p>
           <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
             {details.overview}
           </p>
@@ -203,9 +207,10 @@ function TvShowDetails(props: Props) {
           </button>
 
           <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-            Runtime: {runtime.finalRuntime} minutes <br />
-            Total Number of Episodes: {details.number_of_episodes} <br />
-            Total Number of Seasons: {details.number_of_seasons}
+            Total runtime: {runtime.totalShowRunTime} hours <br />
+            {/* Runtime: {runtime.finalRuntime} minutes per episode <br /> */}
+            {/* Total Number of Episodes: {details.number_of_episodes} <br />
+            Total Number of Seasons: {details.number_of_seasons} */}
           </button>
         </div>
         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
@@ -216,7 +221,7 @@ function TvShowDetails(props: Props) {
           />
         </div>
         <div className="lg:col-span-7">
-          <div className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:focus:ring-gray-800">
+          <div className="inline-flex items-center justify-center px-0 py-1 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:focus:ring-gray-800">
             Average Episode runtime in minutes: {runtime.finalRuntime} <br />
             Total Number of Episodes: {details.number_of_episodes} <br />
             Total Number of Seasons: {details.number_of_seasons} <br />
