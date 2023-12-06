@@ -131,7 +131,7 @@ function TvShowDetails(props: Props) {
   const [showRuntimeInDays, setShowRuntimeInDays] = useState<boolean>(false)
 
   function handleShowRuntimeInDaysClick() {
-    setShowRuntimeInDays(true)
+    setShowRuntimeInDays(!showRuntimeInDays)
   }
 
   const data = getRunTime(userInput, props, showRuntimeInDays)
@@ -204,21 +204,39 @@ function TvShowDetails(props: Props) {
               Already watched
             </button>
           )}
-
-          <button
+          {!showRuntimeInDays ? (
+            <>
+              <button
+                onClick={handleShowRuntimeInDaysClick}
+                className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+              >
+                Total runtime: {data.totalShowRunTime} hours
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                onClick={handleShowRuntimeInDaysClick}
+                className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+              >
+                Total runtime: {data.totalShowRunTimeDays} days
+              </button>
+            </>
+          )}
+          {/* <button
             onClick={handleShowRuntimeInDaysClick}
             className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
-          >
-            Total runtime: {data.totalShowRunTime} hours <br />
-            {/* Runtime: {runtime.finalRuntime} minutes per episode <br /> */}
-            {showRuntimeInDays && (
-              <>
-                Total runtime in days: {data.totalShowRunTimeDays} days <br />
-              </>
-            )}
-            {/* Total Number of Episodes: {details.number_of_episodes} <br />
+          > */}
+          {/* Total runtime: {data.totalShowRunTime} hours <br /> */}
+          {/* Runtime: {runtime.finalRuntime} minutes per episode <br /> */}
+          {/* {showRuntimeInDays && ( */}
+          <>
+            {/* Total runtime in days: {data.totalShowRunTimeDays} days <br /> */}
+          </>
+          {/* )} */}
+          {/* Total Number of Episodes: {details.number_of_episodes} <br />
             Total Number of Seasons: {details.number_of_seasons} */}
-          </button>
+          {/* </button> */}
         </div>
         <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
           <img
@@ -259,7 +277,7 @@ function TvShowDetails(props: Props) {
                 }
                 setUserInput(() => Number(value))
               }}
-              className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
+              className="border w-1/6 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             />
           </div>
         </div>
@@ -291,11 +309,11 @@ function getRunTime(
   const totalShowRunTime = Math.round(
     (finalRuntime * props.details.number_of_episodes) / 60
   )
-  const totalShowRunTimeDays = Math.round(totalShowRunTime / 24)
+  const totalShowRunTimeDays = (totalShowRunTime / 24).toFixed(1)
   let daysToWatchShow = 0
   if (!isNaN(userInput)) {
     // Check if userInput is not blank and is a valid number
-    daysToWatchShow = Math.round((totalShowRunTime * 60) / userInput)
+    daysToWatchShow = Number(((totalShowRunTime * 60) / userInput).toFixed(1))
   }
   console.log('user', userInput)
   console.log('time', daysToWatchShow)
