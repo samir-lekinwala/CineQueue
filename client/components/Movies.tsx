@@ -7,15 +7,15 @@ interface Props {
   movies: any
 }
 
-function Movies(props: Props) {
-  const popularMovies = props.movies.popular.results
-  const upcomingMovies = props.movies.upcoming.results
-  const topRatedMovies = props.movies.topRated.results
-  const comedy = props.movies.comedy.results
-  const action = props.movies.action.results
-  const adventure = props.movies.adventure.results
-  const animation = props.movies.animation.results
-  const horror = props.movies.horror.results
+function Movies({ movies }: Props) {
+  const popularMovies = movies.popular.results
+  const upcomingMovies = movies.upcoming.results
+  const topRatedMovies = movies.topRated.results
+  const comedy = movies.comedy.results
+  const action = movies.action.results
+  const adventure = movies.adventure.results
+  const animation = movies.animation.results
+  const horror = movies.horror.results
 
   return (
     <div>

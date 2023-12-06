@@ -30,7 +30,7 @@ function Nav() {
 
   useEffect(() => {
     handleToken()
-  })
+  }, [])
 
   return (
     <>
