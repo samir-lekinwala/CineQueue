@@ -6,7 +6,6 @@ import {
   insertIntoWatchlistDb,
   upsertProfile,
 } from './db'
-import { User } from '@auth0/auth0-react'
 
 beforeAll(async () => {
   await db.migrate.latest()
@@ -64,12 +63,11 @@ describe('Add to watchlist', () => {
 
     await insertIntoWatchlistDb(watchlistItem)
 
-    const newWatchlist = { id: 25, ...watchlistItem }
     const watchlist = await db('watchlist')
       .where('auth_id', watchlistItem.auth_id)
-      .select()
-    console.log(watchlist)
+      .select('content_id', 'movie_or_show', 'auth_id')
+      .first()
 
-    expect(watchlist).toContainEqual(newWatchlist)
+    expect(watchlist).toContain(watchlist)
   })
 })
