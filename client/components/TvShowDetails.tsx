@@ -128,7 +128,13 @@ function TvShowDetails(props: Props) {
   }
 
   const [userInput, setUserInput] = useState<number>(0)
-  const data = getRunTime(userInput, props)
+  const [showRuntimeInDays, setShowRuntimeInDays] = useState<boolean>(false)
+
+  function handleShowRuntimeInDaysClick() {
+    setShowRuntimeInDays(true)
+  }
+
+  const data = getRunTime(userInput, props, showRuntimeInDays)
 
   return (
     <section className="bg-black">
@@ -199,9 +205,17 @@ function TvShowDetails(props: Props) {
             </button>
           )}
 
-          <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+          <button
+            onClick={handleShowRuntimeInDaysClick}
+            className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+          >
             Total runtime: {data.totalShowRunTime} hours <br />
             {/* Runtime: {runtime.finalRuntime} minutes per episode <br /> */}
+            {showRuntimeInDays && (
+              <>
+                Total runtime in days: {data.totalShowRunTimeDays} days <br />
+              </>
+            )}
             {/* Total Number of Episodes: {details.number_of_episodes} <br />
             Total Number of Seasons: {details.number_of_seasons} */}
           </button>
@@ -255,9 +269,14 @@ function TvShowDetails(props: Props) {
 }
 export default TvShowDetails
 
-function getRunTime(userInput: number, props: Props) {
+function getRunTime(
+  userInput: number,
+  props: Props,
+  showRuntimeInDays: boolean
+) {
   const episodeRunTime = props.details.episode_run_time
   const lastEpisodeRunTime = [props.details.last_episode_to_air.runtime]
+
   let finalRuntime = 0
   if (episodeRunTime.length > 0) {
     const sum = episodeRunTime.reduce((acc: any, value: any) => acc + value, 0)
@@ -272,7 +291,7 @@ function getRunTime(userInput: number, props: Props) {
   const totalShowRunTime = Math.round(
     (finalRuntime * props.details.number_of_episodes) / 60
   )
-
+  const totalShowRunTimeDays = Math.round(totalShowRunTime / 24)
   let daysToWatchShow = 0
   if (!isNaN(userInput)) {
     // Check if userInput is not blank and is a valid number
@@ -295,5 +314,6 @@ function getRunTime(userInput: number, props: Props) {
     totalShowRunTime: totalShowRunTime,
     daysToWatchShow: daysToWatchShow,
     userInput: userInput,
+    totalShowRunTimeDays: showRuntimeInDays ? totalShowRunTimeDays : undefined,
   }
 }
