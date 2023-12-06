@@ -307,9 +307,9 @@ function getRunTime(
     episodeRunTime: episodeRunTime,
     lastEpisodeRunTime: lastEpisodeRunTime,
     finalRuntime:
-      episodeRunTime.length > 0 && lastEpisodeRunTime.length > 0
-        ? finalRuntime
-        : 'Not Available',
+      episodeRunTime.length === 0 && lastEpisodeRunTime.length === 0
+        ? 'Not available'
+        : finalRuntime,
 
     totalShowRunTime: totalShowRunTime,
     daysToWatchShow: daysToWatchShow,
