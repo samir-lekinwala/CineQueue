@@ -7,9 +7,32 @@ import TvShowDetails from '../components/TvShowDetails'
 import MovieDetails from '../components/MovieDetails'
 import Trailer from '../components/Trailer'
 import Recommendations from '../components/Recommendations'
+import { useAuth0 } from '@auth0/auth0-react'
+import NonLoggedInMovieDetails from '../components/NonLoggedInMovieDetails'
+import NonLoggedInShows from '../components/NonLoggedInShows'
 
 function DetailsPage() {
   const { id, type } = useParams()
+
+  const { user } = useAuth0()
+  const auth0Id = user?.sub
+
+  const {
+    data: loggedin, //watchlist single item on list or not
+  } = useQuery({
+    queryKey: ['loggedin'],
+    queryFn: checkLoggedIn,
+  })
+  const isLoggedIn = loggedin
+
+  console.log('check if logged in v23132: ', isLoggedIn)
+
+  function checkLoggedIn() {
+    queryClient.invalidateQueries(['loggedin', details])
+    if (auth0Id) {
+      return true
+    } else return false
+  }
 
   const queryClient = useQueryClient()
   useEffect(() => {
@@ -46,12 +69,29 @@ function DetailsPage() {
       </div>
       <div className="snap-center">
         {type == 'show' ? (
-          <TvShowDetails details={details} />
+          isLoggedIn ? (
+            <>
+              <TvShowDetails details={details} />
+              <Recommendations type={type} id={Number(id)} />
+            </>
+          ) : (
+            <>
+              <NonLoggedInShows details={details} />
+              <Recommendations type={type} id={Number(id)} />
+            </>
+          )
+        ) : isLoggedIn ? (
+          <>
+            <MovieDetails details={details} />
+            <Recommendations type={type} id={Number(id)} />
+          </>
         ) : (
-          <MovieDetails details={details} />
+          <>
+            <NonLoggedInMovieDetails details={details} />
+            <Recommendations type={type} id={Number(id)} />
+          </>
         )}
       </div>
-      <Recommendations type={type} id={Number(id)} />
     </div>
   )
 }
