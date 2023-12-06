@@ -36,7 +36,6 @@ function SearchResults() {
     return { movies: movies, shows: shows }
   }
 
-  console.log(searchResults)
   return (
     <div className="bg-black">
       <div className="text-white">{`Results for "${searchTerm}"`}</div>

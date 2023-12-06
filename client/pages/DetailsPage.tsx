@@ -22,7 +22,6 @@ function DetailsPage() {
     queryKey: ['trailer', type, id],
     queryFn: () => getTrailer(type as string, Number(id)),
   })
-  console.log(trailer)
 
   const {
     data: details,
@@ -38,7 +37,6 @@ function DetailsPage() {
     console.error(error)
     return null
   }
-  console.log(details)
 
   return (
     <div className="bg-black snap-proximity snap-x snap-start">
