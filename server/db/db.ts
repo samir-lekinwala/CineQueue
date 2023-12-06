@@ -32,3 +32,23 @@ export async function upsertProfile(user: User, db = connection) {
 export async function getWatchlist(authId: string, db = connection) {
   return await db('watchlist').where('auth_id', authId).select()
 }
+export async function getCompletedlist(authId: string, db = connection) {
+  return await db('seen').where('auth_id', authId).select()
+}
+
+export async function deleteFromCompletedList(
+  watchlistItem: WatchlistData,
+  db = connection
+) {
+  return await db('seen')
+    .where('auth_id', watchlistItem.auth_id)
+    .where('content_id', watchlistItem.content_id)
+    .del()
+}
+
+export async function addToCompleted(
+  watchlistItem: WatchlistData,
+  db = connection
+) {
+  await db('seen').insert(watchlistItem)
+}

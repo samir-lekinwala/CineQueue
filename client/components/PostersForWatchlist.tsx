@@ -1,29 +1,59 @@
 import { NavHashLink } from 'react-router-hash-link'
 import { getDetailById } from '../api/combinedApi'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
-import { deleteFromWatchlist } from '../api/dbApi'
+import {
+  addToCompletedList,
+  deleteFromCompletedList,
+  deleteFromWatchlist,
+} from '../api/dbApi'
 
 function PostersForWatchlist(props: Props) {
-  const { type, id } = props
+  const { type, id, state } = props
+
+  const mutateDeleteFromCompletedList = useMutation({
+    mutationFn: async () => {
+      const token = await getAccessTokenSilently()
+      await deleteFromCompletedList(toWatchList, token)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['completedChecker'])
+    },
+  })
+  const mutateDeleteFromWatchList = useMutation({
+    mutationFn: async () => {
+      const token = await getAccessTokenSilently()
+      await deleteFromWatchlist(toWatchList, token)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['watchlistChecker'])
+    },
+  })
+  const addToCompletedListFromWatch = useMutation({
+    mutationFn: async () => {
+      const token = await getAccessTokenSilently()
+      await addToCompletedList(toWatchList, token)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['watchlistChecker'])
+    },
+  })
 
   const { user, getAccessTokenSilently } = useAuth0()
   const auth0Id = user?.sub
   const tmdbPosterLink = `https://image.tmdb.org/t/p/w500/`
 
-  console.log(id, type)
   const queryClient = useQueryClient()
-  queryClient.invalidateQueries(['watchlistContent', id])
+  queryClient.invalidateQueries(['watchlistContent', 'completedChecker', id])
   useEffect(() => {
     // Invalidate relevant queries when type or id changes
 
-    queryClient.invalidateQueries(['watchlistContent', id])
+    queryClient.invalidateQueries(['watchlistContent', 'completedChecker', id])
   }, [queryClient, id])
 
   async function getContentDetails() {
     const result = await getDetailById(type, id)
-    console.log('result v2', result)
     return result
   }
 
@@ -33,7 +63,7 @@ function PostersForWatchlist(props: Props) {
     error,
     isError,
   } = useQuery({
-    queryKey: ['watchlistContent', 'watchlistChecker', id],
+    queryKey: ['watchlistContent', 'watchlistChecker', 'completedChecker', id],
     queryFn: getContentDetails,
   })
   if (isLoading) return <h1>Loading...</h1>
@@ -41,7 +71,6 @@ function PostersForWatchlist(props: Props) {
     console.error(error)
     return null
   }
-  console.log('Content', content)
 
   function getReleaseYear() {
     if (content.release_date) {
@@ -63,9 +92,19 @@ function PostersForWatchlist(props: Props) {
 
   async function handleWatchListClickDelete() {
     const token = await getAccessTokenSilently()
-    await deleteFromWatchlist(toWatchList, token)
-    // console.log(toWatchList)
-    queryClient.invalidateQueries(['watchlistChecker'])
+    if (state == 'watchlist') {
+      mutateDeleteFromWatchList.mutate(toWatchList, token)
+    } else if (state == 'completed') {
+      mutateDeleteFromCompletedList.mutate(toWatchList, token)
+      // await deleteFromCompletedList(toWatchList, token)
+    }
+    queryClient.invalidateQueries(['watchlistChecker', 'completedChecker', id])
+  }
+
+  async function handleGreenTickClick() {
+    const token = await getAccessTokenSilently()
+    handleWatchListClickDelete()
+    addToCompletedListFromWatch.mutate(toWatchList, token)
   }
 
   return (
@@ -97,12 +136,23 @@ function PostersForWatchlist(props: Props) {
           </>
         )}
       </NavHashLink>
-      <button
-        onClick={handleWatchListClickDelete}
-        className="text-[#be123c] text-center"
-      >
-        X
-      </button>
+
+      <div className="flex justify-between">
+        <button
+          onClick={handleWatchListClickDelete}
+          className="text-[#be123c] text-center"
+        >
+          X
+        </button>
+        {state == 'watchlist' ? (
+          <button
+            onClick={handleGreenTickClick}
+            className="text-[#12be43] text-center"
+          >
+            &#10004;
+          </button>
+        ) : null}
+      </div>
       {/* <p>{`ID: ${content.id}`}</p> */}
     </div>
   )

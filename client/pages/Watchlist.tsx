@@ -40,6 +40,7 @@ function Watchlist() {
             <PostersForWatchlist
               type={item.movie_or_show}
               id={item.content_id}
+              state={'watchlist'}
             />
             {/* <p className="text-white">{item.content_id}</p> */}
           </div>

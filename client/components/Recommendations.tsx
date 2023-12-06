@@ -35,8 +35,6 @@ function Recommendations(props: Props) {
     return null
   }
 
-  console.log('Recomendations', details)
-
   async function getRecomendations() {
     const result = await getRecomendationsById(type, id)
     return result
