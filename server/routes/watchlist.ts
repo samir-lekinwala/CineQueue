@@ -22,7 +22,7 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
     await db.insertIntoWatchlistDb(watchlist)
     res.sendStatus(201)
   } catch (error) {
-    console.error(error)
+    // console.error(error)
     res.status(500).json({ message: error })
   }
 })
@@ -34,12 +34,11 @@ router.delete('/', checkJwt, async (req: JwtRequest, res) => {
       auth_id: auth0Id,
       ...userData,
     } as WatchlistData
-    console.log('from server side: ', userData)
 
     await db.deleteFromWatchlist(watchlist)
     res.sendStatus(200)
   } catch (error) {
-    console.error(error)
+    // console.error(error)
     res.status(500).json({ message: error })
   }
 })
@@ -58,7 +57,7 @@ router.get('/', checkJwt, async (req: JwtRequest, res) => {
     const result = await db.getWatchlist(auth0Id)
     res.status(200).json(result)
   } catch (error) {
-    console.error(error)
+    // console.error(error)
     res.status(500).json({ message: error })
   }
 })

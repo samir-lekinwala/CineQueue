@@ -19,7 +19,7 @@ router.post('/', checkJwt, async (req: JwtRequest, res) => {
     await db.upsertProfile(user)
     res.sendStatus(201)
   } catch (error) {
-    console.error(error)
+    // console.error(error)
     res.status(500).json({ message: error })
   }
 })
