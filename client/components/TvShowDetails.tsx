@@ -88,6 +88,7 @@ function TvShowDetails(props: Props) {
   }
 
   const [userInput, setUserInput] = useState<number | ''>('')
+  console.log(userInput)
 
   const {
     data: runtime,
@@ -95,7 +96,7 @@ function TvShowDetails(props: Props) {
     error,
     isError,
   } = useQuery({
-    queryKey: ['runtime', props],
+    queryKey: ['runtime', props.details.totalShowRunTime, userInput],
     queryFn: getRunTime,
   })
   if (isLoading) return <h1>Loading...</h1>
@@ -228,13 +229,16 @@ function TvShowDetails(props: Props) {
             {/* Total hours to watch the show: {runtime.totalShowRunTime}
             <br /> */}
             Days to watch:
-            {/* {runtime.userInput}: */}
-            {runtime.daysToWatchShow}
+            {runtime.userInput &&
+            runtime.daysToWatchShow &&
+            !isNaN(runtime.daysToWatchShow)
+              ? runtime.daysToWatchShow
+              : 'N/A'}
             <label
               htmlFor="userInput"
               className="block mt-4 text-gray-500 dark:text-gray-400"
             >
-              Avaiability:
+              Availability:
             </label>
             <input
               type="number"
@@ -247,7 +251,7 @@ function TvShowDetails(props: Props) {
                 if (value.length === 1 && value === '0') {
                   return
                 }
-                setUserInput(Number(value))
+                setUserInput(() => Number(value))
               }}
               className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             />

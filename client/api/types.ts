@@ -10,6 +10,8 @@ export type Details = {
   number_of_seasons: number
   name: string
   last_episode_to_air: object
+  totalShowRunTime: number
+  finalRuntime: number
 }
 
 // "last_episode_to_air": {
