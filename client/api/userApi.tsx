@@ -5,7 +5,6 @@ export async function getUser(token: unknown) {
     .get('/api/v1/cine')
     .set('Authorization', `Bearer ${token}`)
     .set('Content-Type', 'application/json')
-  console.log('Token: ', token)
 
   return res.body
 }

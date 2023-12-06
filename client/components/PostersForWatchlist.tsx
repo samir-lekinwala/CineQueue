@@ -3,27 +3,25 @@ import { getDetailById } from '../api/combinedApi'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
-import { deleteFromWatchlist } from '../api/dbApi'
+import { deleteFromCompletedList, deleteFromWatchlist } from '../api/dbApi'
 
 function PostersForWatchlist(props: Props) {
-  const { type, id } = props
+  const { type, id, state } = props
 
   const { user, getAccessTokenSilently } = useAuth0()
   const auth0Id = user?.sub
   const tmdbPosterLink = `https://image.tmdb.org/t/p/w500/`
 
-  console.log(id, type)
   const queryClient = useQueryClient()
-  queryClient.invalidateQueries(['watchlistContent', id])
+  queryClient.invalidateQueries(['watchlistContent', 'completedChecker', id])
   useEffect(() => {
     // Invalidate relevant queries when type or id changes
 
-    queryClient.invalidateQueries(['watchlistContent', id])
+    queryClient.invalidateQueries(['watchlistContent', 'completedChecker', id])
   }, [queryClient, id])
 
   async function getContentDetails() {
     const result = await getDetailById(type, id)
-    console.log('result v2', result)
     return result
   }
 
@@ -33,7 +31,7 @@ function PostersForWatchlist(props: Props) {
     error,
     isError,
   } = useQuery({
-    queryKey: ['watchlistContent', 'watchlistChecker', id],
+    queryKey: ['watchlistContent', 'watchlistChecker', 'completedChecker', id],
     queryFn: getContentDetails,
   })
   if (isLoading) return <h1>Loading...</h1>
@@ -41,7 +39,6 @@ function PostersForWatchlist(props: Props) {
     console.error(error)
     return null
   }
-  console.log('Content', content)
 
   function getReleaseYear() {
     if (content.release_date) {
@@ -63,9 +60,17 @@ function PostersForWatchlist(props: Props) {
 
   async function handleWatchListClickDelete() {
     const token = await getAccessTokenSilently()
-    await deleteFromWatchlist(toWatchList, token)
-    // console.log(toWatchList)
-    queryClient.invalidateQueries(['watchlistChecker'])
+    if (state == 'watchlist') {
+      await deleteFromWatchlist(toWatchList, token)
+    } else if (state == 'completed') {
+      await deleteFromCompletedList(toWatchList, token)
+    }
+    queryClient.invalidateQueries([
+      'watchlistChecker',
+      'completedChecker',
+      state,
+      id,
+    ])
   }
 
   return (
