@@ -4,7 +4,14 @@ import React, { useEffect, useState } from 'react'
 
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Details } from '../api/types'
-import { addToWatchlist, deleteFromWatchlist, getWatchlist } from '../api/dbApi'
+import {
+  addToCompletedList,
+  addToWatchlist,
+  deleteFromCompletedList,
+  deleteFromWatchlist,
+  getCompletedList,
+  getWatchlist,
+} from '../api/dbApi'
 import { useAuth0 } from '@auth0/auth0-react'
 const { VITE_API_KEY } = import.meta.env
 
@@ -26,7 +33,6 @@ function TvShowDetails(props: Props) {
   const { user, getAccessTokenSilently } = useAuth0()
   const auth0Id = user?.sub
 
-  // console.log('user: ', user?.sub)
   const toWatchList = {
     content_id: details.id,
     movie_or_show: 'show',
@@ -36,11 +42,24 @@ function TvShowDetails(props: Props) {
   const queryClient = useQueryClient()
   useEffect(() => {
     // Invalidate relevant queries when type or id changes
-
+    queryClient.invalidateQueries(['completedOrNot', details])
+    queryClient.invalidateQueries(['completedListChecker', details])
     queryClient.invalidateQueries(['watchedOrNot', details])
     queryClient.invalidateQueries(['watchlistChecker', details])
     // onWatchlistChecker()
   }, [queryClient, details])
+
+  const {
+    data: completed, //watchlist single item on list or not
+  } = useQuery({
+    queryKey: ['completedOrNot'],
+    queryFn: onCompletedListChecker,
+  })
+
+  const { data: completedList } = useQuery({
+    queryKey: ['completedListChecker'],
+    queryFn: totalCompletedList,
+  })
 
   const {
     data: watched, //watchlist single item on list or not
@@ -48,7 +67,6 @@ function TvShowDetails(props: Props) {
     queryKey: ['watchedOrNot'],
     queryFn: onWatchlistChecker,
   })
-  console.log('watched or not v2', watched)
 
   const { data: watchlist } = useQuery({
     queryKey: ['watchlistChecker'],
@@ -59,8 +77,6 @@ function TvShowDetails(props: Props) {
     const token = await getAccessTokenSilently()
     return await getWatchlist(token)
   }
-
-  // console.log('towatchlist: ', toWatchList)
 
   //function to add to watchlist
 
@@ -73,17 +89,41 @@ function TvShowDetails(props: Props) {
   async function handleWatchListClickDelete() {
     const token = await getAccessTokenSilently()
     await deleteFromWatchlist(toWatchList, token)
-    console.log(toWatchList)
     queryClient.invalidateQueries(['watchlistChecker'])
   }
 
   function onWatchlistChecker() {
     const result = watchlist.filter((item) => item.content_id == details.id)
-    console.log('result: ', result)
     if (result.length > 0) {
-      // console.log("watched is true")
       return true
-      // console.log("watched is true")
+    } else return false
+  }
+
+  //for completed
+
+  async function totalCompletedList() {
+    const token = await getAccessTokenSilently()
+    return await getCompletedList(token)
+  }
+
+  // //function to add to watchlist
+
+  async function handleCompletedListClick() {
+    const token = await getAccessTokenSilently()
+    await addToCompletedList(toWatchList, token)
+    queryClient.invalidateQueries(['completedListChecker'])
+  }
+
+  async function handleCompletedListClickDelete() {
+    const token = await getAccessTokenSilently()
+    await deleteFromCompletedList(toWatchList, token)
+    queryClient.invalidateQueries(['completedListChecker'])
+  }
+
+  function onCompletedListChecker() {
+    const result = completedList.filter((item) => item.content_id == details.id)
+    if (result.length > 0) {
+      return true
     } else return false
   }
 
@@ -132,12 +172,6 @@ function TvShowDetails(props: Props) {
       // Check if userInput is not blank and is a valid number
       daysToWatchShow = Math.round((totalShowRunTime * 60) / userInput)
     }
-    console.log('user', userInput)
-    console.log('time', daysToWatchShow)
-    console.log('Runtime:', episodeRunTime)
-    console.log('Runtime1:', lastEpisodeRunTime)
-    console.log('Runtime2:', finalRuntime)
-
     return {
       episodeRunTime: episodeRunTime,
       lastEpisodeRunTime: lastEpisodeRunTime,
@@ -202,9 +236,21 @@ function TvShowDetails(props: Props) {
               </svg>
             </button>
           )}
-          <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-            Add to completed
-          </button>
+          {!onCompletedListChecker() ? (
+            <button
+              onClick={handleCompletedListClick}
+              className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+            >
+              Add to completed
+            </button>
+          ) : (
+            <button
+              onClick={handleCompletedListClickDelete}
+              className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+            >
+              Already watched
+            </button>
+          )}
 
           <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
             Total runtime: {runtime.totalShowRunTime} hours <br />
@@ -222,12 +268,13 @@ function TvShowDetails(props: Props) {
         </div>
         <div className="lg:col-span-7">
           <div className="inline-flex items-center justify-center px-0 py-1 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:focus:ring-gray-800">
-            Average Episode runtime in minutes: {runtime.finalRuntime} <br />
-            Total Number of Episodes: {details.number_of_episodes} <br />
-            Total Number of Seasons: {details.number_of_seasons} <br />
-            Total hours to watch the show: {runtime.totalShowRunTime}
-            <br />
-            Days to watch with {runtime.userInput} minutes daily:
+            Average Episode runtime: {runtime.finalRuntime} minutes <br />
+            {/* Total Number of Episodes: {details.number_of_episodes} <br />
+            Total Number of Seasons: {details.number_of_seasons} <br /> */}
+            {/* Total hours to watch the show: {runtime.totalShowRunTime}
+            <br /> */}
+            Days to watch:
+            {/* {runtime.userInput}: */}
             {runtime.daysToWatchShow}
             <label
               htmlFor="userInput"
@@ -239,7 +286,7 @@ function TvShowDetails(props: Props) {
               type="number"
               id="userInput"
               name="userInput"
-              placeholder="minutes daily"
+              placeholder="Availability in minutes daily"
               value={userInput}
               onChange={(e) => {
                 const value = e.target.value

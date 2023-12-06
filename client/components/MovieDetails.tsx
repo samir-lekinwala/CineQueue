@@ -1,6 +1,13 @@
 import { useAuth0 } from '@auth0/auth0-react'
 import { Details } from '../api/types'
-import { addToWatchlist, deleteFromWatchlist, getWatchlist } from '../api/dbApi'
+import {
+  addToCompletedList,
+  addToWatchlist,
+  deleteFromCompletedList,
+  deleteFromWatchlist,
+  getCompletedList,
+  getWatchlist,
+} from '../api/dbApi'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 
@@ -20,6 +27,8 @@ function MovieDetails(props: Props) {
 
     queryClient.invalidateQueries(['watchedOrNot', details])
     queryClient.invalidateQueries(['watchlistChecker', details])
+    queryClient.invalidateQueries(['completedOrNot', details])
+    queryClient.invalidateQueries(['completedListChecker', details])
     // onWatchlistChecker()
   }, [queryClient, details])
 
@@ -28,6 +37,17 @@ function MovieDetails(props: Props) {
   } = useQuery({
     queryKey: ['watchedOrNot'],
     queryFn: onWatchlistChecker,
+  })
+  const {
+    data: completed, //watchlist single item on list or not
+  } = useQuery({
+    queryKey: ['completedOrNot'],
+    queryFn: onCompletedListChecker,
+  })
+
+  const { data: completedList } = useQuery({
+    queryKey: ['completedListChecker'],
+    queryFn: totalCompletedList,
   })
 
   const {
@@ -45,7 +65,6 @@ function MovieDetails(props: Props) {
     return null
   }
 
-  // console.log('user: ', user?.sub)
   const toWatchList = {
     content_id: details.id,
     movie_or_show: 'movie',
@@ -56,8 +75,6 @@ function MovieDetails(props: Props) {
     const token = await getAccessTokenSilently()
     return await getWatchlist(token)
   }
-
-  console.log(`Whats on watchlist`, watchlist)
 
   //function to add to watchlist
 
@@ -70,21 +87,62 @@ function MovieDetails(props: Props) {
   async function handleWatchListClickDelete() {
     const token = await getAccessTokenSilently()
     await deleteFromWatchlist(toWatchList, token)
-    console.log(toWatchList)
     queryClient.invalidateQueries(['watchlistChecker'])
   }
 
   function onWatchlistChecker() {
     const result = watchlist.filter((item) => item.content_id == details.id)
-    console.log('result: ', result)
     if (result.length > 0) {
-      // console.log("watched is true")
       return true
-      // console.log("watched is true")
     } else return false
   }
 
-  console.log('watched or not', watched)
+  // for completed below
+
+  // const queryClient = useQueryClient()
+  // useEffect(() => {
+  //   // Invalidate relevant queries when type or id changes
+
+  //   queryClient.invalidateQueries(['watchedOrNot', details])
+  //   queryClient.invalidateQueries(['watchlistChecker', details])
+  //   // onWatchlistChecker()
+  // }, [queryClient, details])
+
+  // const {
+  //   data: watched, //watchlist single item on list or not
+  // } = useQuery({
+  //   queryKey: ['watchedOrNot'],
+  //   queryFn: onWatchlistChecker,
+  // })
+
+  async function totalCompletedList() {
+    const token = await getAccessTokenSilently()
+    return await getCompletedList(token)
+  }
+
+  // //function to add to watchlist
+
+  async function handleCompletedListClick() {
+    const token = await getAccessTokenSilently()
+    await addToCompletedList(toWatchList, token)
+    queryClient.invalidateQueries(['completedListChecker'])
+  }
+
+  async function handleCompletedListClickDelete() {
+    const token = await getAccessTokenSilently()
+    await deleteFromCompletedList(toWatchList, token)
+    queryClient.invalidateQueries(['completedListChecker'])
+  }
+
+  function onCompletedListChecker() {
+    const result = completedList.filter((item) => item.content_id == details.id)
+    if (result.length > 0) {
+      return true
+    } else return false
+  }
+
+  //for completed above
+
   return (
     // <div className="grid grid-flow-col auto-cols-max">
     //   <img
@@ -161,10 +219,24 @@ function MovieDetails(props: Props) {
                 ></path>
               </svg>
             </button> */}
-
-            <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
+            {!onCompletedListChecker() ? (
+              <button
+                onClick={handleCompletedListClick}
+                className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+              >
+                Add to completed
+              </button>
+            ) : (
+              <button
+                onClick={handleCompletedListClickDelete}
+                className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+              >
+                Already watched
+              </button>
+            )}
+            {/* <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
               Add to completed
-            </button>
+            </button> */}
             <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
               Runtime: {details.runtime} minutes
             </button>

@@ -75,8 +75,6 @@ export async function getShowsByGenre(genreId: number) {
   return data
 }
 
-// console.log('tv show trailer ', getTrailerForShow(1429))
-
 export async function getTvShows() {
   return {
     comedy: await getShowsByGenre(35),

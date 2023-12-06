@@ -987,6 +987,11 @@ video {
   letter-spacing: -0.025em;
 }
 
+.text-\[\#12be43\] {
+  --tw-text-opacity: 1;
+  color: rgb(18 190 67 / var(--tw-text-opacity));
+}
+
 .text-\[\#be123c\] {
   --tw-text-opacity: 1;
   color: rgb(190 18 60 / var(--tw-text-opacity));
