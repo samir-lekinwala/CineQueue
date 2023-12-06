@@ -3,7 +3,11 @@ import { getDetailById } from '../api/combinedApi'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
-import { deleteFromCompletedList, deleteFromWatchlist } from '../api/dbApi'
+import {
+  addToCompletedList,
+  deleteFromCompletedList,
+  deleteFromWatchlist,
+} from '../api/dbApi'
 
 function PostersForWatchlist(props: Props) {
   const { type, id, state } = props
@@ -21,6 +25,15 @@ function PostersForWatchlist(props: Props) {
     mutationFn: async () => {
       const token = await getAccessTokenSilently()
       await deleteFromWatchlist(toWatchList, token)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['watchlistChecker'])
+    },
+  })
+  const addToCompletedListFromWatch = useMutation({
+    mutationFn: async () => {
+      const token = await getAccessTokenSilently()
+      await addToCompletedList(toWatchList, token)
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['watchlistChecker'])
@@ -88,6 +101,12 @@ function PostersForWatchlist(props: Props) {
     queryClient.invalidateQueries(['watchlistChecker', 'completedChecker', id])
   }
 
+  async function handleGreenTickClick() {
+    const token = await getAccessTokenSilently()
+    handleWatchListClickDelete()
+    addToCompletedListFromWatch.mutate(toWatchList, token)
+  }
+
   return (
     <div>
       <NavHashLink to={`/details/${type}/${content.id}#trailer`}>
@@ -117,12 +136,23 @@ function PostersForWatchlist(props: Props) {
           </>
         )}
       </NavHashLink>
-      <button
-        onClick={handleWatchListClickDelete}
-        className="text-[#be123c] text-center"
-      >
-        X
-      </button>
+
+      <div className="flex justify-between">
+        <button
+          onClick={handleWatchListClickDelete}
+          className="text-[#be123c] text-center"
+        >
+          X
+        </button>
+        {state == 'watchlist' ? (
+          <button
+            onClick={handleGreenTickClick}
+            className="text-[#12be43] text-center"
+          >
+            &#10004;
+          </button>
+        ) : null}
+      </div>
       {/* <p>{`ID: ${content.id}`}</p> */}
     </div>
   )
