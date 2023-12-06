@@ -8,16 +8,6 @@ function Seen() {
   const { user, getAccessTokenSilently } = useAuth0()
   const auth0Id = user?.sub
 
-  const queryClient = useQueryClient()
-  useEffect(() => {
-    // Invalidate relevant queries when type or id changes
-
-    queryClient.invalidateQueries(['completedOrNot'])
-    queryClient.invalidateQueries(['completedChecker'])
-    queryClient.invalidateQueries(['completedListChecker'])
-    // onWatchlistChecker()
-  }, [queryClient])
-
   const {
     data: completed,
     isLoading,
@@ -41,7 +31,7 @@ function Seen() {
   return (
     <div className="bg-black">
       <div>
-        <h1 className="text-white">Watchlist</h1>
+        <h1 className="text-white">Completed</h1>
       </div>
       <div className="flex flex-wrap gap-4">
         {completed.map((item) => (

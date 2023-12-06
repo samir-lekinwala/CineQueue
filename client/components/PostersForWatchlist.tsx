@@ -1,12 +1,31 @@
 import { NavHashLink } from 'react-router-hash-link'
 import { getDetailById } from '../api/combinedApi'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 import { deleteFromCompletedList, deleteFromWatchlist } from '../api/dbApi'
 
 function PostersForWatchlist(props: Props) {
   const { type, id, state } = props
+
+  const mutateDeleteFromCompletedList = useMutation({
+    mutationFn: async () => {
+      const token = await getAccessTokenSilently()
+      await deleteFromCompletedList(toWatchList, token)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['completedChecker'])
+    },
+  })
+  const mutateDeleteFromWatchList = useMutation({
+    mutationFn: async () => {
+      const token = await getAccessTokenSilently()
+      await deleteFromWatchlist(toWatchList, token)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(['watchlistChecker'])
+    },
+  })
 
   const { user, getAccessTokenSilently } = useAuth0()
   const auth0Id = user?.sub
@@ -61,16 +80,12 @@ function PostersForWatchlist(props: Props) {
   async function handleWatchListClickDelete() {
     const token = await getAccessTokenSilently()
     if (state == 'watchlist') {
-      await deleteFromWatchlist(toWatchList, token)
+      mutateDeleteFromWatchList.mutate(toWatchList, token)
     } else if (state == 'completed') {
-      await deleteFromCompletedList(toWatchList, token)
+      mutateDeleteFromCompletedList.mutate(toWatchList, token)
+      // await deleteFromCompletedList(toWatchList, token)
     }
-    queryClient.invalidateQueries([
-      'watchlistChecker',
-      'completedChecker',
-      state,
-      id,
-    ])
+    queryClient.invalidateQueries(['watchlistChecker', 'completedChecker', id])
   }
 
   return (
