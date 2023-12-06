@@ -1,15 +1,21 @@
 // Full API return type has not been declared, only properties used
+type LastEpisode = {
+  runtime: number
+}
+
 export type Details = {
   id: number
   title: string
   overview: string
   poster_path: string
   runtime: number
-  episode_run_time: number
+  episode_run_time: number[]
   number_of_episodes: number
   number_of_seasons: number
   name: string
-  last_episode_to_air: object
+  last_episode_to_air: LastEpisode
+  totalShowRunTime: number
+  finalRuntime: number
 }
 
 // "last_episode_to_air": {

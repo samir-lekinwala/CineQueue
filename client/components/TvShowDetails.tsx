@@ -127,61 +127,14 @@ function TvShowDetails(props: Props) {
     } else return false
   }
 
-  const [userInput, setUserInput] = useState<number | ''>('')
+  const [userInput, setUserInput] = useState<number>(0)
+  const [showRuntimeInDays, setShowRuntimeInDays] = useState<boolean>(false)
 
-  const {
-    data: runtime,
-    isLoading,
-    error,
-    isError,
-  } = useQuery({
-    queryKey: ['runtime', props],
-    queryFn: getRunTime,
-  })
-  if (isLoading) return <h1>Loading...</h1>
-  if (isError) {
-    console.error(error)
-    return null
+  function handleShowRuntimeInDaysClick() {
+    setShowRuntimeInDays(true)
   }
 
-  function getRunTime() {
-    const episodeRunTime = props.details.episode_run_time
-    const lastEpisodeRunTime = [props.details.last_episode_to_air.runtime]
-    let finalRuntime
-    if (episodeRunTime.length > 0) {
-      const sum = episodeRunTime.reduce(
-        (acc: any, value: any) => acc + value,
-        0
-      )
-      const averageEpisodeRunTime = sum / episodeRunTime.length
-      finalRuntime = averageEpisodeRunTime
-    } else if (lastEpisodeRunTime.length > 0) {
-      const sum = lastEpisodeRunTime.reduce((acc, value) => acc + value, 0)
-      const averageLastEpisodeRunTime = sum / lastEpisodeRunTime.length
-      finalRuntime = averageLastEpisodeRunTime
-    } else {
-      finalRuntime = 'Not Avilable'
-    }
-
-    const totalShowRunTime = Math.round(
-      (finalRuntime * details.number_of_episodes) / 60
-    )
-
-    let daysToWatchShow = ''
-    if (userInput !== '' && !isNaN(userInput)) {
-      // Check if userInput is not blank and is a valid number
-      daysToWatchShow = Math.round((totalShowRunTime * 60) / userInput)
-    }
-    return {
-      episodeRunTime: episodeRunTime,
-      lastEpisodeRunTime: lastEpisodeRunTime,
-      finalRuntime: finalRuntime,
-
-      totalShowRunTime: totalShowRunTime,
-      daysToWatchShow: daysToWatchShow,
-      userInput: userInput,
-    }
-  }
+  const data = getRunTime(userInput, props, showRuntimeInDays)
 
   return (
     <section className="bg-black">
@@ -252,9 +205,17 @@ function TvShowDetails(props: Props) {
             </button>
           )}
 
-          <button className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800">
-            Total runtime: {runtime.totalShowRunTime} hours <br />
+          <button
+            onClick={handleShowRuntimeInDaysClick}
+            className="inline-flex items-center justify-center px-5 py-3 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700 dark:focus:ring-gray-800"
+          >
+            Total runtime: {data.totalShowRunTime} hours <br />
             {/* Runtime: {runtime.finalRuntime} minutes per episode <br /> */}
+            {showRuntimeInDays && (
+              <>
+                Total runtime in days: {data.totalShowRunTimeDays} days <br />
+              </>
+            )}
             {/* Total Number of Episodes: {details.number_of_episodes} <br />
             Total Number of Seasons: {details.number_of_seasons} */}
           </button>
@@ -268,19 +229,22 @@ function TvShowDetails(props: Props) {
         </div>
         <div className="lg:col-span-7">
           <div className="inline-flex items-center justify-center px-0 py-1 text-base font-medium text-center text-gray-900 border border-gray-300 rounded-lg focus:ring-4 focus:ring-gray-100 dark:text-white dark:border-gray-700 dark:focus:ring-gray-800">
-            Average Episode runtime: {runtime.finalRuntime} minutes <br />
+            Average Episode runtime: {data.finalRuntime} minutes <br />
             {/* Total Number of Episodes: {details.number_of_episodes} <br />
             Total Number of Seasons: {details.number_of_seasons} <br /> */}
             {/* Total hours to watch the show: {runtime.totalShowRunTime}
             <br /> */}
             Days to watch:
-            {/* {runtime.userInput}: */}
-            {runtime.daysToWatchShow}
+            {data.userInput &&
+            data.daysToWatchShow &&
+            !isNaN(data.daysToWatchShow)
+              ? data.daysToWatchShow
+              : 'N/A'}
             <label
               htmlFor="userInput"
               className="block mt-4 text-gray-500 dark:text-gray-400"
             >
-              Avaiability:
+              Availability:
             </label>
             <input
               type="number"
@@ -293,7 +257,7 @@ function TvShowDetails(props: Props) {
                 if (value.length === 1 && value === '0') {
                   return
                 }
-                setUserInput(Number(value))
+                setUserInput(() => Number(value))
               }}
               className="border border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:ring focus:border-blue-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white"
             />
@@ -304,3 +268,52 @@ function TvShowDetails(props: Props) {
   )
 }
 export default TvShowDetails
+
+function getRunTime(
+  userInput: number,
+  props: Props,
+  showRuntimeInDays: boolean
+) {
+  const episodeRunTime = props.details.episode_run_time
+  const lastEpisodeRunTime = [props.details.last_episode_to_air.runtime]
+
+  let finalRuntime = 0
+  if (episodeRunTime.length > 0) {
+    const sum = episodeRunTime.reduce((acc: any, value: any) => acc + value, 0)
+    const averageEpisodeRunTime = sum / episodeRunTime.length
+    finalRuntime = averageEpisodeRunTime
+  } else if (lastEpisodeRunTime.length > 0) {
+    const sum = lastEpisodeRunTime.reduce((acc, value) => acc + value, 0)
+    const averageLastEpisodeRunTime = sum / lastEpisodeRunTime.length
+    finalRuntime = averageLastEpisodeRunTime
+  }
+
+  const totalShowRunTime = Math.round(
+    (finalRuntime * props.details.number_of_episodes) / 60
+  )
+  const totalShowRunTimeDays = Math.round(totalShowRunTime / 24)
+  let daysToWatchShow = 0
+  if (!isNaN(userInput)) {
+    // Check if userInput is not blank and is a valid number
+    daysToWatchShow = Math.round((totalShowRunTime * 60) / userInput)
+  }
+  console.log('user', userInput)
+  console.log('time', daysToWatchShow)
+  console.log('Runtime:', episodeRunTime)
+  console.log('Runtime1:', lastEpisodeRunTime)
+  console.log('Runtime2:', finalRuntime)
+
+  return {
+    episodeRunTime: episodeRunTime,
+    lastEpisodeRunTime: lastEpisodeRunTime,
+    finalRuntime:
+      episodeRunTime.length > 0 && lastEpisodeRunTime.length > 0
+        ? finalRuntime
+        : 'Not Available',
+
+    totalShowRunTime: totalShowRunTime,
+    daysToWatchShow: daysToWatchShow,
+    userInput: userInput,
+    totalShowRunTimeDays: showRuntimeInDays ? totalShowRunTimeDays : undefined,
+  }
+}
