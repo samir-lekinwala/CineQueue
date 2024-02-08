@@ -1,13 +1,13 @@
 {
   "homepage": "https://samir-lekinwala.github.io/CineQueue/",
-  "name": "jwt-auth-query",
+  "name": "cinequeue",
   "type": "module",
   "description": "An exercise to practice how to apply authentication",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "predeploy" : "npm run build",
-    "deploy" : "gh-pages -d dist",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "start": "node dist/server.js",
     "dev": "run-p dev:server dev:client dev:css",
     "restart": "npm run knex migrate:latest && npm run knex seed:run",
@@ -24,7 +24,7 @@
     "test": "vitest",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
     "format": "prettier -w '**/*.{js,jsx,ts,tsx}'",
-    "dev:css": "tailwindcss -i ./client/styles/input.css -o ./dist/output.css --watch"
+    "dev:css": "tailwindcss -i ./client/styles/input.css -o ./public/output.css --watch"
   },
   "eslintConfig": {
     "extends": "@devacademy/eslint-config/react",
