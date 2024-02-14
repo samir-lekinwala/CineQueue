@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -b master -d build",
+    "deploy": "gh-pages -b master -d dist",
     "start": "node build/server.js",
     "dev": "run-p dev:server dev:client dev:css",
     "restart": "npm run knex migrate:latest && npm run knex seed:run",
