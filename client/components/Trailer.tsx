@@ -13,7 +13,7 @@ function Trailer(props: Props) {
   w-full aspect-video"
         frameBorder="0"
         allowFullScreen
-        src={`http://www.youtube.com/embed/${props.trailer}?autoplay=1&controls=0&enablejsapi=1&origin=http://example.com`}
+        src={`https://www.youtube.com/embed/${props.trailer}?autoplay=1&controls=0&enablejsapi=1&origin=http://example.com`}
       ></iframe>
     </div>
   )
